@@ -4,8 +4,8 @@
  */
 package Models;
 
-import Cliente.Client;
-import Servidor.ThreadServidor;
+import Client.Client;
+import Server.ServerThread;
 
 /**
  *
@@ -21,13 +21,13 @@ public class CommandGiveup extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(true);
-        threadServidor.isActive = false;
+        serverThread.isActive = false;
 
         // Verificar si hay un ganador después de marcar como inactivo
         try {
-            Servidor.GameVictoryManager.checkVictory(threadServidor.getServer());
+            Server.GameVictoryManager.checkVictory(serverThread.getServer());
         } catch (Exception ignored) {
         }
     }

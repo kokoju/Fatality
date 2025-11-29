@@ -1,12 +1,9 @@
 package Models;
 
-import Cliente.Client;
-import Servidor.ThreadServidor;
-import Cliente.ThreadClient;
+import Client.*;
+import Server.ServerThread;
 
-/**
- * sando
- */
+
 public class CommandResult extends Command {
 
     public CommandResult(String[] args) {
@@ -16,7 +13,7 @@ public class CommandResult extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread threadServidor) {
         this.setIsBroadcast(true);
     }
 
@@ -44,7 +41,7 @@ public class CommandResult extends Command {
             }
             // Registrar en la bitácora del thread local que se recibió la confirmación
             try {
-                ThreadClient t = client.getThreadClient();
+                ClientThread t = client.getClientThread();
                 if (t != null) {
                     String entrada = "ATTACK_SENT: " + msg;
                     t.addBitacora(entrada);

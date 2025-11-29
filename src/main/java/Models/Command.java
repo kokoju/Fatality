@@ -4,8 +4,8 @@
  */
 package Models;
 
-import Cliente.Client;
-import Servidor.ThreadServidor;
+import Client.Client;
+import Server.ServerThread;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -25,7 +25,7 @@ public abstract class Command implements Serializable{
         this.parameters =  parameters; // Enemigo 4 5 6 7 9 10
     }
     
-    public abstract void processForServer(ThreadServidor threadServidor);
+    public abstract void processForServer(ServerThread threadServidor);
     
     public void processInClient(Client client){
         client.getRefFrame().writeMessage(this.toString());

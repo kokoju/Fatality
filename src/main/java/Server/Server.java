@@ -10,7 +10,6 @@ import Models.CommandType;
 import Models.CommandApplyAttack;
 import Models.AttackPayload;
 import Server.ServerFrame;
-import Servidor.ConnectionThread;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -35,11 +34,11 @@ public class Server {
     // Juego iniciado?
     private boolean start = false;
 
-    public Server(FrameServer refFrame) {
-        connectedClients = new LinkedList<ThreadServidor>();
+    public Server(ServerFrame refFrame) {
+        connectedClients = new LinkedList<ServerThread>();
         this.refFrame = refFrame;
         this.init();
-        connectionsThread = new ThreadConnections(this);
+        connectionsThread = new ConnectionThread(this);
         connectionsThread.start();
     }
 
@@ -94,7 +93,8 @@ public class Server {
 
     }
 
-    void executeCommand(Command comando, ServerThread origin) {
+    public void executeCommand(Command comando, ServerThread origin) {
+        /*
         // Si es un ApplyyAttack, validar el payload antes de reenviar
         try {
             if (comando.getType() == CommandType.APPLYATTACK) {
@@ -167,6 +167,7 @@ public class Server {
             GameVictoryManager.checkVictory(this);
         } catch (Exception ignored) {
         }
+        */
     }
 
     public void broadcast(Command comando) {
@@ -181,7 +182,6 @@ public class Server {
     }
 
     public void processPrivate(Command comando, ServerThread own) {
-
         try {
             own.objectSender.writeObject(comando);
 

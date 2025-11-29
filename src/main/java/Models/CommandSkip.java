@@ -4,7 +4,7 @@
  */
 package Models;
 
-import Servidor.ThreadServidor;
+import Server.ServerThread;
 
 /**
  * Command para saltar el turno propio. Solo puede usarse en el turno del cliente que lo envía.
@@ -20,7 +20,7 @@ public class CommandSkip extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread threadServidor) {
         // Transmitir como broadcast y avanzar al siguiente turno
         this.setIsBroadcast(true);
     }

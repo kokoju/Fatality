@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Servidor;
+package Server;
 
 import Models.Command;
 import Models.CommandFactory;
@@ -60,7 +60,7 @@ public class ServerThread extends Thread {
         while (isRunning){
             try {
                 comando = (Command)objectListener.readObject();
-                server.refFrame.writeMessage("ThreadServer recibió: " + comando);
+                server.getRefFrame().writeMessage("ThreadServer recibió: " + comando);
                 comando.processForServer(this);
                 
                 //Si el comando consume el turno y no es el turno del cliente
@@ -83,8 +83,7 @@ public class ServerThread extends Thread {
         } 
     }
     
-    
-    
+
     public void showAllClients (){
         this.server.showAllNames();
     }

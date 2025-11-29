@@ -4,9 +4,9 @@
  */
 package Models;
 
-import Cliente.Client;
+import Client.Client;
 import Hero.Hero;
-import Servidor.ThreadServidor;
+import Server.ServerThread;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +24,7 @@ public class CommandBoost extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(false);
         
     }

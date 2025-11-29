@@ -4,8 +4,8 @@
  */
 package Models;
 
-import Servidor.Server;
-import Servidor.ThreadServidor;
+import Server.ServerThread;
+
 
 /**
  *
@@ -21,9 +21,9 @@ public class CommandReady extends Command{
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(true);
-        threadServidor.getServer().startGame(threadServidor);
+        serverThread.getServer().startGame(serverThread);
     }
     
 }

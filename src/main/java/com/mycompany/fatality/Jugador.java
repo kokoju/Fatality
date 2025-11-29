@@ -4,6 +4,8 @@
  */
 package com.mycompany.fatality;
 
+import Client.FrameClient;
+
 /**
  *
  * @author kokoju

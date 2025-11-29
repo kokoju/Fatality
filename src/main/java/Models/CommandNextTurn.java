@@ -4,7 +4,7 @@
  */
 package Models;
 
-import Servidor.ThreadServidor;
+import Server.ServerThread;
 
 /**
  *
@@ -19,9 +19,9 @@ public class CommandNextTurn extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(true);
-        threadServidor.getServer().nextTurn();
+        serverThread.getServer().nextTurn();
     }
     
     @Override

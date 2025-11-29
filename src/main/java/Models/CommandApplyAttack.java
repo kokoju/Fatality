@@ -4,13 +4,12 @@
  */
 package Models;
 
-import Cliente.Client;
+import Client.Client;
 import Cliente.FrameClient;
 import Cliente.Jugador;
 import Hero.*;
 import Models.AttackPayload;
-import Servidor.Server;
-import Servidor.ThreadServidor;
+import Server.ServerThread;
 import javax.swing.SwingUtilities;
 import java.awt.Point;
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class CommandApplyAttack extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(false);
     }
 

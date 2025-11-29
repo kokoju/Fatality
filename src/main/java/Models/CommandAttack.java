@@ -4,11 +4,12 @@
  */
 package Models;
 
-import Cliente.Client;
+import Client.Client;
 import Cliente.Jugador;
 import Hero.Hero;
 import Hero.HeroPackage;
-import Servidor.ThreadServidor;
+import Server.ServerThread;
+import com.mycompany.fatality.Jugador;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class CommandAttack extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(false);
     }
 

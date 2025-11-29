@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.fatality;
+package Client;
 
 /**
  *
@@ -19,6 +19,10 @@ public class FrameClient extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void writeMessage(String msg) {
+        txaMessages.append(msg + "\n");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

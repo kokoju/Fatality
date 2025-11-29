@@ -4,8 +4,9 @@
  */
 package Models;
 
-import Cliente.Client;
-import Servidor.ThreadServidor;
+import Client.Client;
+import Server.ServerThread;
+
 
 /**
  *
@@ -20,7 +21,7 @@ public class CommandPrivateMessage extends Command{
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(false);
     }
     

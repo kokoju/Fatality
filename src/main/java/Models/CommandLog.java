@@ -1,7 +1,7 @@
 package Models;
 
-import Cliente.Client;
-import Servidor.ThreadServidor;
+import Client.Client;
+import Server.ServerThread;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +17,7 @@ public class CommandLog extends Command {
     }
 
     @Override
-    public void processForServer(ThreadServidor threadServidor) {
+    public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(false);
     }
 
@@ -28,7 +28,7 @@ public class CommandLog extends Command {
 
         // Obtain the ThreadClient and its bitacora
         try {
-            ArrayList<String> bit = client.getThreadClient().getBitacora();
+            ArrayList<String> bit = client.getClientThread().getBitacora();
             if (bit == null || bit.isEmpty()) {
                 client.getRefFrame().writeMessage("[BITACORA] Sin eventos registrados");
                 return;
