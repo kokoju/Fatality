@@ -20,7 +20,7 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     public void writeMessage(String msg) {
-        txaMessages.append(msg + "\n");
+        // txaMessages.append(msg + "\n");
     }
     
     /**
