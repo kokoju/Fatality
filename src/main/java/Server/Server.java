@@ -106,7 +106,6 @@ public class Server {
             this.nextTurn(); // Primer turno
             start = true;
         }
-
     }
     
     // Funciones en relación a la recuperación de datos, ver https://www.w3schools.com/java/java_hashmap.asp
@@ -155,6 +154,8 @@ public class Server {
         for (ServerThread client : connectedClients) {
             try {
                 client.objectSender.writeObject(comando);  // TODO
+            }
+        }
     }
 
     
@@ -317,11 +318,9 @@ public class Server {
     }
 
     public boolean buscarJugador(String searchName) {
-
         for (ServerThread client : connectedClients) {
             if (client.name.equalsIgnoreCase(searchName))
                 return true;
-
         }
         return false;
     }
@@ -367,5 +366,4 @@ public class Server {
     public boolean getStart() {
         return start;
     }
-
 }
