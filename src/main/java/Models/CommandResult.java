@@ -35,8 +35,8 @@ public class CommandResult extends Command {
             String heroName = params[3];
             if (attackerName.equalsIgnoreCase(client.name)) {
                 if (client.getJugador() != null) {
-                    Hero.Hero heroe = client.getJugador().buscarHeroe(heroName);
-                    heroe.consumirStrengthen();
+                    // Hero.Hero heroe = client.getJugador().buscarHeroe(heroName);
+                    // heroe.consumirStrengthen();
                 }
             }
             // Registrar en la bitácora del thread local que se recibió la confirmación
@@ -60,7 +60,7 @@ public class CommandResult extends Command {
         client.getRefFrame().writeMessage(msg);
         // Notificar posible resultado (victoria / derrota)
         try {
-            Cliente.OutcomeNotifier.handleResultMessage(client, msg);
+            // Cliente.OutcomeNotifier.handleResultMessage(client, msg);
         } catch (Exception ignored) {
         }
     }

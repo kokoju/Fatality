@@ -5,9 +5,6 @@
 package Models;
 
 import Client.Client;
-import Cliente.Jugador;
-import Hero.Hero;
-import Hero.HeroPackage;
 import Server.ServerThread;
 import com.mycompany.fatality.Jugador;
 import java.io.IOException;
@@ -18,8 +15,8 @@ import java.util.logging.Logger;
  *
  * @author diego
  */
-public class CommandAttack extends Command {
-
+public class CommandAttack {  // extends Command
+    /*
     public CommandAttack(String[] args) { // ATTACK Andres 5 7
         super(CommandType.ATTACK, args);
         this.consumesTurn = false;
@@ -102,5 +99,5 @@ public class CommandAttack extends Command {
         }
 
     }
-
+    */
 }

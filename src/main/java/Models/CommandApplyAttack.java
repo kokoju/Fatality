@@ -5,9 +5,7 @@
 package Models;
 
 import Client.Client;
-import Cliente.FrameClient;
-import Cliente.Jugador;
-import Hero.*;
+import Client.FrameClient;
 import Models.AttackPayload;
 import Server.ServerThread;
 import javax.swing.SwingUtilities;
@@ -21,8 +19,8 @@ import java.util.logging.Logger;
  *
  * @author sando
  */
-public class CommandApplyAttack extends Command {
-
+public class CommandApplyAttack {  // extends Commad
+    /*
     private AttackPayload payload;
 
 
@@ -52,7 +50,7 @@ public class CommandApplyAttack extends Command {
 
         if (extras != null) 
             for (int i = 0; i < extras.length; i++) 
-                params[4 + i] = extras[i];
+                params[4 + i] = extras[i]; 
         return params;
     }
 
@@ -275,5 +273,5 @@ public class CommandApplyAttack extends Command {
 
         return true;
     }
-
+*/
 }

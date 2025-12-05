@@ -13,7 +13,7 @@ import java.util.Arrays;
  *
  * @author diego
  */
-public abstract class Command implements Serializable{
+public abstract class Command implements Serializable {
     private CommandType type;
     private String[] parameters;
     private boolean isBroadcast;
@@ -28,7 +28,7 @@ public abstract class Command implements Serializable{
     public abstract void processForServer(ServerThread threadServidor);
     
     public void processInClient(Client client){
-        client.getRefFrame().writeMessage(this.toString());
+        // client.getRefFrame().writeMessage(this.toString());
     }
     
     public CommandType getType() {
@@ -39,6 +39,7 @@ public abstract class Command implements Serializable{
         return parameters;
     }
     
+    @Override
     public String toString(){
         return type.toString() + "->" + Arrays.toString(parameters);
     }

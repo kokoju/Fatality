@@ -5,7 +5,6 @@
 package Models;
 
 import Client.Client;
-import Hero.Hero;
 import Server.ServerThread;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -15,8 +14,8 @@ import java.util.logging.Logger;
  *
  * @author sando
  */
-public class CommandBoost extends Command {
-    
+public class CommandBoost {  // extends Command
+    /*
     public CommandBoost(String[] args) {
         super(CommandType.BOOST, args);
         this.consumesTurn = true;
@@ -61,5 +60,6 @@ public class CommandBoost extends Command {
 
         }
     }
+*/
 }
 

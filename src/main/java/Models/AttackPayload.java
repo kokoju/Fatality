@@ -1,13 +1,15 @@
 package Models;
 
 import java.io.Serializable;
+/*
 import java.util.Arrays;
 import Hero.HeroPackage;
-
+*/
 /**
  * DTO serializable para describir un ataque entre clientes/servidor.
  */
-public class AttackPayload implements Serializable {
+public class AttackPayload implements Serializable{
+    /*
     private String attackerName;
     private String targetName;
     private String heroType;
@@ -44,5 +46,6 @@ public class AttackPayload implements Serializable {
     public String[] getExtras() {        return extras; }
     public HeroPackage getHeroPackage(){ return heroPackage; }
     public boolean isReflected() { return reflected; }
-
+    */
 }
+

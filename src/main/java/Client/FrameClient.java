@@ -32,8 +32,6 @@ public class FrameClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txfCommand = new javax.swing.JTextField();
-        btnSend = new javax.swing.JButton();
         pnlEquipo = new javax.swing.JPanel();
         pnlAtaque = new javax.swing.JPanel();
         pnlRanking = new javax.swing.JPanel();
@@ -41,16 +39,6 @@ public class FrameClient extends javax.swing.JFrame {
         pnlStatsPropias = new javax.swing.JPanel();
         btnEnviar = new javax.swing.JButton();
         txfCommands = new javax.swing.JTextField();
-
-        btnSend.setBackground(new java.awt.Color(51, 255, 51));
-        btnSend.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        btnSend.setForeground(new java.awt.Color(255, 255, 255));
-        btnSend.setText("SEND!");
-        btnSend.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSendActionPerformed(evt);
-            }
-        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,10 +150,6 @@ public class FrameClient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSendActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -193,13 +177,11 @@ public class FrameClient extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
-    private javax.swing.JButton btnSend;
     private javax.swing.JPanel pnlAtaque;
     private javax.swing.JPanel pnlEquipo;
     private javax.swing.JPanel pnlRanking;
     private javax.swing.JPanel pnlStatsEnemigo;
     private javax.swing.JPanel pnlStatsPropias;
-    private javax.swing.JTextField txfCommand;
     private javax.swing.JTextField txfCommands;
     // End of variables declaration//GEN-END:variables
 }
