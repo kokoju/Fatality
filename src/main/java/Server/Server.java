@@ -15,17 +15,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Enumeration;
+
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -126,7 +124,7 @@ public class Server {
     }
     
     public void crearNuevoJugador(String nombreJugador) {  // Si entra un jugador que no forma parte de los rankings, se añade
-        this.diccionarioEstadisticas.put(nombreJugador, new Stats());
+        this.hashMapEstadisticas.put(nombreJugador, new Stats());
         actualizarStats();  // Hubo cambios, se actualiza en archivo
     }
     
@@ -138,24 +136,26 @@ public class Server {
 
     public void actualizarStats() {  // Función para guardar actualizaciones en el archivo (cada que hay un cambio): se usa la líbrería GSON
         Gson gson = new Gson();  // Se crea un nuevo Objeto Gson
-        Type typeObject = new TypeToken<HashMap<String, Stats>() {}.getType();  // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
+        Type typeObject = new TypeToken<HashMap<String, Stats>>() {}.getType();  // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
         String gsonData = gson.toJson(this.hashMapEstadisticas, typeObject);  // Serializa el diccionario a formato JSON, siguiendo el tipo indicado
         
         try (FileWriter writer = new FileWriter(this.archivoEstadisticas, false)) {  // Intentamos crear una escritor en el archivo. El 'false' borra todo el contenido que estaba anteriormente
             writer.write(gsonData);
             actualizarDatosParaJugadores();
         } catch (IOException e) {  // Si hay una excepción al intentar escribir
-            this.enviarError("NO SE PUEDE ESCRIBIR EN EL ARCHIVO");  // Si llega a existir un error al intentar escribir, se muestra en la pantalla de la calculadora
+            // this.enviarError("NO SE PUEDE ESCRIBIR EN EL ARCHIVO");  // Si llega a existir un error al intentar escribir, se muestra en la pantalla de la calculadora TODO
         }
     }
     
     public void actualizarDatosParaJugadores() {  // El espacio de texto de DataFrame para cada jugador debe tener la info actualizada, entonces eso se llama en cada iteración
         // TODO
+        /*
         for (ServerThread client : connectedClients) {
             try {
                 client.objectSender.writeObject(comando);  // TODO
             }
         }
+        */
     }
 
     
@@ -358,7 +358,7 @@ public class Server {
         return archivoEstadisticas;
     }
 
-    public HashMap<String, ArrayList<Integer>> getHashMapEstadisticas() {
+    public HashMap<String, Stats> getHashMapEstadisticas() {
         return hashMapEstadisticas;
     }
 
