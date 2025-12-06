@@ -12,7 +12,7 @@ import com.mycompany.oceanicwars.Typewritter;
  */
 public class ServerFrame extends javax.swing.JFrame {
     private Server server;
-    
+    static final int DELAY = 5; // Delay para mostrar el texto en milisegundos
     
     public ServerFrame() {
         initComponents();
@@ -27,7 +27,7 @@ public class ServerFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     
     public void writeMessage(String msg){
-        Typewritter.typeText(txaServerMessages, msg + "\n", 200);
+        Typewritter.typeText(txaServerMessages, "\n" + msg, DELAY, true);
     }
     
     

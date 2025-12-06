@@ -5,7 +5,6 @@
 package Client;
 
 import Models.CommandFactory;
-import com.mycompany.fatality.Jugador;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

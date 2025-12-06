@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.fatality;
+package Client;
 
-import static com.mycompany.fatality.GameLogic.*;
+import static Client.FrameClient.CANTIDAD_TIPOS;
 import java.util.Random;
 
 /**

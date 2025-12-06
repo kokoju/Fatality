@@ -61,6 +61,8 @@ public class Server {
         try {
             serverSocket = new ServerSocket(PORT);
             refFrame.writeMessage("Server running!!!");
+            iniciarStats();
+            
         } catch (IOException ex) {
             refFrame.writeMessage("Error: " + ex.getMessage());
         }

@@ -28,6 +28,6 @@ public class CommandPrivateMessage extends Command{
     @Override
     public void processInClient(Client client) {
         //private_message Andres "Hola mundo"
-        client.getRefFrame().writeMessage("Mensaje para " + this.getParameters()[1] + ": " + this.getParameters()[2]);
+        // client.getRefFrame().writeMessage("Mensaje para " + this.getParameters()[1] + ": " + this.getParameters()[2]);
         }
     }

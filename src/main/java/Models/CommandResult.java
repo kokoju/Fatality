@@ -57,7 +57,7 @@ public class CommandResult extends Command {
                 return;
         } else
             msg = params[1];
-        client.getRefFrame().writeMessage(msg);
+        // client.getRefFrame().writeMessage(msg);
         // Notificar posible resultado (victoria / derrota)
         try {
             // Cliente.OutcomeNotifier.handleResultMessage(client, msg);

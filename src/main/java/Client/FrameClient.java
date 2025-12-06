@@ -4,25 +4,52 @@
  */
 package Client;
 
+import Peleador.Tipo;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 /**
  *
  * @author kokoju
  */
 public class FrameClient extends javax.swing.JFrame {
-    
+    static final int DELAY = 5; // Delay para mostrar el texto en milisegundos
+    private Client client;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrameClient.class.getName());
-
+    static final int CANTIDAD_TIPOS = Tipo.values().length;  // Para una estructura escalable, la cantidad de tipos se asigna como  una variable final y estática
     /**
      * Creates new form FrameClient
      */
     public FrameClient() {
         initComponents();
+
+        // Solicitar el nombre hasta que sea válido
+        String name = null;
+        while (name == null || name.trim().isEmpty()) {
+            name = JOptionPane.showInputDialog(this, "Ingrese su nombre");
+
+            // Si el usuario cierra la ventana, cerrar la aplicación
+            if (name == null) {
+                System.exit(0);
+            }
+
+            // Si el nombre está vacío, mostrar advertencia y volver a preguntar
+            if (name.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "El nombre no puede estar vacío.\nPor favor, ingresa un nombre válido.",
+                        "Nombre Requerido",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+
+        this.setTitle("Cliente de " + name); // Se pone el nombre introducido como título de la ventana
+        client = new Client(this, name); // Creamos un nuevo cliente c
     }
 
-    public void writeMessage(String msg) {
-        // txaMessages.append(msg + "\n");
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,75 +59,83 @@ public class FrameClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlEquipo = new javax.swing.JPanel();
-        pnlAtaque = new javax.swing.JPanel();
-        pnlRanking = new javax.swing.JPanel();
-        pnlStatsEnemigo = new javax.swing.JPanel();
-        pnlStatsPropias = new javax.swing.JPanel();
-        btnEnviar = new javax.swing.JButton();
-        txfCommands = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txaEnemyStats = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txaRanking = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txaStats = new javax.swing.JTextArea();
+        pnlAttack1 = new javax.swing.JPanel();
+        pnlAttack2 = new javax.swing.JPanel();
+        pnlMenu = new javax.swing.JPanel();
+        txfInput = new javax.swing.JTextField();
+        btnSend = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout pnlEquipoLayout = new javax.swing.GroupLayout(pnlEquipo);
-        pnlEquipo.setLayout(pnlEquipoLayout);
-        pnlEquipoLayout.setHorizontalGroup(
-            pnlEquipoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 704, Short.MAX_VALUE)
+        jScrollPane1.setEnabled(false);
+        jScrollPane1.setFocusable(false);
+
+        txaEnemyStats.setColumns(20);
+        txaEnemyStats.setRows(5);
+        txaEnemyStats.setFocusable(false);
+        jScrollPane1.setViewportView(txaEnemyStats);
+
+        jScrollPane2.setEnabled(false);
+        jScrollPane2.setFocusable(false);
+        jScrollPane2.setWheelScrollingEnabled(false);
+
+        txaRanking.setColumns(20);
+        txaRanking.setRows(5);
+        txaRanking.setFocusable(false);
+        jScrollPane2.setViewportView(txaRanking);
+        txaRanking.getAccessibleContext().setAccessibleDescription("");
+        txaRanking.getAccessibleContext().setAccessibleParent(jScrollPane1);
+
+        jScrollPane3.setEnabled(false);
+        jScrollPane3.setFocusable(false);
+
+        txaStats.setColumns(20);
+        txaStats.setRows(5);
+        txaStats.setFocusable(false);
+        jScrollPane3.setViewportView(txaStats);
+
+        javax.swing.GroupLayout pnlAttack1Layout = new javax.swing.GroupLayout(pnlAttack1);
+        pnlAttack1.setLayout(pnlAttack1Layout);
+        pnlAttack1Layout.setHorizontalGroup(
+            pnlAttack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
-        pnlEquipoLayout.setVerticalGroup(
-            pnlEquipoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        pnlAttack1Layout.setVerticalGroup(
+            pnlAttack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout pnlAtaqueLayout = new javax.swing.GroupLayout(pnlAtaque);
-        pnlAtaque.setLayout(pnlAtaqueLayout);
-        pnlAtaqueLayout.setHorizontalGroup(
-            pnlAtaqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 330, Short.MAX_VALUE)
-        );
-        pnlAtaqueLayout.setVerticalGroup(
-            pnlAtaqueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlAttack2Layout = new javax.swing.GroupLayout(pnlAttack2);
+        pnlAttack2.setLayout(pnlAttack2Layout);
+        pnlAttack2Layout.setHorizontalGroup(
+            pnlAttack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
+        pnlAttack2Layout.setVerticalGroup(
+            pnlAttack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
+        );
 
-        javax.swing.GroupLayout pnlRankingLayout = new javax.swing.GroupLayout(pnlRanking);
-        pnlRanking.setLayout(pnlRankingLayout);
-        pnlRankingLayout.setHorizontalGroup(
-            pnlRankingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
+        pnlMenu.setLayout(pnlMenuLayout);
+        pnlMenuLayout.setHorizontalGroup(
+            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        pnlRankingLayout.setVerticalGroup(
-            pnlRankingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+        pnlMenuLayout.setVerticalGroup(
+            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 544, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout pnlStatsEnemigoLayout = new javax.swing.GroupLayout(pnlStatsEnemigo);
-        pnlStatsEnemigo.setLayout(pnlStatsEnemigoLayout);
-        pnlStatsEnemigoLayout.setHorizontalGroup(
-            pnlStatsEnemigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlStatsEnemigoLayout.setVerticalGroup(
-            pnlStatsEnemigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout pnlStatsPropiasLayout = new javax.swing.GroupLayout(pnlStatsPropias);
-        pnlStatsPropias.setLayout(pnlStatsPropiasLayout);
-        pnlStatsPropiasLayout.setHorizontalGroup(
-            pnlStatsPropiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlStatsPropiasLayout.setVerticalGroup(
-            pnlStatsPropiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
-
-        btnEnviar.setBackground(new java.awt.Color(51, 255, 0));
-        btnEnviar.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        btnEnviar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEnviar.setText("SEND");
+        btnSend.setBackground(new java.awt.Color(0, 204, 0));
+        btnSend.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        btnSend.setText("SEND");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,41 +145,46 @@ public class FrameClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txfCommands, javax.swing.GroupLayout.PREFERRED_SIZE, 1152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEnviar)
-                        .addGap(0, 20, Short.MAX_VALUE))
+                        .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 1122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 36, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlRanking, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(pnlStatsEnemigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(pnlStatsPropias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pnlAttack1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pnlAttack2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pnlAtaque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pnlEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlRanking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlStatsEnemigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(pnlStatsPropias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pnlAtaque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlEquipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txfCommands, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(pnlAttack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(pnlAttack2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(12, 12, 12))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -176,12 +216,66 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEnviar;
-    private javax.swing.JPanel pnlAtaque;
-    private javax.swing.JPanel pnlEquipo;
-    private javax.swing.JPanel pnlRanking;
-    private javax.swing.JPanel pnlStatsEnemigo;
-    private javax.swing.JPanel pnlStatsPropias;
-    private javax.swing.JTextField txfCommands;
+    private javax.swing.JButton btnSend;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel pnlAttack1;
+    private javax.swing.JPanel pnlAttack2;
+    private javax.swing.JPanel pnlMenu;
+    private javax.swing.JTextArea txaEnemyStats;
+    private javax.swing.JTextArea txaRanking;
+    private javax.swing.JTextArea txaStats;
+    private javax.swing.JTextField txfInput;
     // End of variables declaration//GEN-END:variables
+
+    // Getters
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public JButton getBtnSend() {
+        return btnSend;
+    }
+
+    public JPanel getPnlAttack1() {
+        return pnlAttack1;
+    }
+
+    public JPanel getPnlAttack2() {
+        return pnlAttack2;
+    }
+
+    public JPanel getPnlMenu() {
+        return pnlMenu;
+    }
+
+    public JTextArea getTxaEnemyStats() {
+        return txaEnemyStats;
+    }
+
+    public JTextArea getTxaRanking() {
+        return txaRanking;
+    }
+
+    public JTextArea getTxaStats() {
+        return txaStats;
+    }
+
+    public JTextField getTxfInput() {
+        return txfInput;
+    }
+    
+    // Setters
+    public void setTextTxaEnemyStats(String text) {
+        this.txaEnemyStats.setText(text);
+    }
+    
+    public void setTextTxaRanking(String text) {
+        this.txaRanking.setText(text);
+    }
+    
+    public void setTextTxaStats(String text) {
+        this.txaStats.setText(text);
+    }
 }

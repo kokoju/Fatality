@@ -29,9 +29,8 @@ public class CommandName extends Command{
     @Override
     public void processInClient(Client client) {
         //NAME Nombre de persona
-        client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
-        
-        
+        // client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
+         
     }
 
 }

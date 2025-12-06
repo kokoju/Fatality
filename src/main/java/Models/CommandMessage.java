@@ -29,7 +29,7 @@ public class CommandMessage extends Command{
     @Override
     public void processInClient(Client client) {
         //Message "string"
-        client.getRefFrame().writeMessage("Mensaje recibido: " + this.getParameters()[1]);
+        // client.getRefFrame().writeMessage("Mensaje recibido: " + this.getParameters()[1]);
     }
     
 }

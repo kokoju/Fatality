@@ -6,7 +6,7 @@ package Models;
 
 import Client.Client;
 import Server.ServerThread;
-import com.mycompany.fatality.Jugador;
+import Client.Jugador;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

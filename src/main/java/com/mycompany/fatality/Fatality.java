@@ -3,6 +3,7 @@
  */
 
 package com.mycompany.fatality;
+import Client.MenuPrincipal;
 
 /**
  *
@@ -11,6 +12,7 @@ package com.mycompany.fatality;
 public class Fatality {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        // Lanzar el menú principal
+        MenuPrincipal.main(args);
     }
 }

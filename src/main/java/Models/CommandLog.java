@@ -30,17 +30,18 @@ public class CommandLog extends Command {
         try {
             ArrayList<String> bit = client.getClientThread().getBitacora();
             if (bit == null || bit.isEmpty()) {
-                client.getRefFrame().writeMessage("[BITACORA] Sin eventos registrados");
+                // client.getRefFrame().writeMessage("[BITACORA] Sin eventos registrados");
                 return;
             }
 
-            client.getRefFrame().writeMessage("[BITACORA] Inicio de registros:");
+            // client.getRefFrame().writeMessage("[BITACORA] Inicio de registros:");
             for (String evento : bit) {
-                client.getRefFrame().writeMessage(" - " + evento);
+                // client.getRefFrame().writeMessage(" - " + evento);
             }
-            client.getRefFrame().writeMessage("[BITACORA] Fin de registros.");
+            // client.getRefFrame().writeMessage("[BITACORA] Fin de registros.");
         } catch (Exception ex) {
-            try { client.getRefFrame().writeMessage("[BITACORA] Error mostrando bitácora: " + ex.getMessage()); } catch (Exception e) {}
+            try { //client.getRefFrame().writeMessage("[BITACORA] Error mostrando bitácora: " + ex.getMessage()); 
+            } catch (Exception e) {}
         }
     }
 }
