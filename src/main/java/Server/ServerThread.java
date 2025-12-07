@@ -82,7 +82,6 @@ public class ServerThread extends Thread {
             }  
         } 
     }
-    
 
     public void showAllClients (){
         this.server.showAllNames();
@@ -100,6 +99,7 @@ public class ServerThread extends Thread {
         return server;
     }
 
-    
-    
+    public String getClientName() {
+        return name;
+    }
 }

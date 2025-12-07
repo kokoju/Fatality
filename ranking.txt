@@ -1,0 +1,1 @@
+{"Marco":{"wins":3,"losses":0,"attacks":0,"sucess":0,"failed":0,"giveup":0},"Andres":{"wins":0,"losses":0,"attacks":0,"sucess":0,"failed":0,"giveup":0},"Felipe":{"wins":0,"losses":0,"attacks":0,"sucess":0,"failed":0,"giveup":0},"Juan":{"wins":1,"losses":0,"attacks":0,"sucess":0,"failed":0,"giveup":0}}

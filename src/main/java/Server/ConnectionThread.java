@@ -24,13 +24,14 @@ public class ConnectionThread extends Thread {
     @Override
     public void run() {
         Socket newSocket = null;
-        while (  server.getConnectedClients().size() < server.getMaxConections() ){
-            server.getRefFrame().writeMessage("Esperando conexión No.");
+        server.getRefFrame().writeMessage("Esperando conexiones");
+        while (server.getConnectedClients().size() < server.getMaxConections() ){
             try {
                 newSocket = server.getServerSocket().accept();
                 //una vez con socket recibido, se crea e inicia el thread que va a anteder y escuchar al clinete que los conectó
                 ServerThread newServerThread = new ServerThread(server, newSocket);
                 server.getConnectedClients().add (newServerThread);
+                
                 newServerThread.start();
 
                 server.getRefFrame().writeMessage("Cliente conectado");

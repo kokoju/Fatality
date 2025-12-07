@@ -24,12 +24,15 @@ public class CommandName extends Command{
         this.setIsBroadcast(true);
         serverThread.name = getParameters()[1];
         serverThread.showAllClients();
+                      
+        if (!serverThread.getServer().getHashMapEstadisticas().containsKey(serverThread.name))  // Si el cliente no era parte del arreglo de datos, se le genera un espacio en el archivo
+            serverThread.getServer().crearNuevoJugador(serverThread.name);
     }
     
     @Override
     public void processInClient(Client client) {
         //NAME Nombre de persona
-        // client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
+        //client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
          
     }
 

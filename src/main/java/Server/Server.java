@@ -10,7 +10,6 @@ import Models.CommandFactory;
 import Models.CommandType;
 import Models.CommandApplyAttack;
 import Models.AttackPayload;
-import Server.ServerFrame;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
@@ -21,11 +20,21 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.json.*;
 
@@ -42,7 +51,7 @@ public class Server {
     private ServerFrame refFrame;
     private ConnectionThread connectionsThread;
     private File archivoEstadisticas = new File("ranking.txt");
-    private HashMap<String, Stats> hashMapEstadisticas;
+    private LinkedHashMap<String, Stats> hashMapEstadisticas;  // Un LinkedHashMap funciona como un HashMap (llave, valor), pero con la estructura de una lista enlazada, dónde los elementos se siguen entre si
 
     // Juego iniciado?
     private boolean start = false;
@@ -50,10 +59,11 @@ public class Server {
     public Server(ServerFrame refFrame) {
         connectedClients = new LinkedList<ServerThread>();
         this.refFrame = refFrame;
+        this.iniciarStats();  // Se establece una función para recuperar las estadísticas de cada jugador (almacenado en this.hashMapEstadisticas)
         this.init();
         this.connectionsThread = new ConnectionThread(this);
         this.connectionsThread.start();
-        this.hashMapEstadisticas = this.iniciarStats();  // Se establece una función para recuperar las estadísticas de cada jugador
+        
     }
 
     // método que inicializa el server
@@ -61,7 +71,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(PORT);
             refFrame.writeMessage("Server running!!!");
-            iniciarStats();
+            
             
         } catch (IOException ex) {
             refFrame.writeMessage("Error: " + ex.getMessage());
@@ -109,21 +119,59 @@ public class Server {
     }
     
     // Funciones en relación a la recuperación de datos, ver https://www.w3schools.com/java/java_hashmap.asp
-    
-    public HashMap<String, Stats> iniciarStats() {  // Función para leer estadísticas de un archivo
-        HashMap<String, Stats> resultadoStats = new HashMap<>();  // Se crea un HashMap dónde guardaremos el resultado
-        try (JsonReader reader = Json.createReader(new FileReader(this.archivoEstadisticas))) {  // Creamos un reader para JSON
-            JsonObject raiz = reader.readObject();  // Se lee el objeto, almacenando el contenido en una raíz
-            for (String nombreJugador : raiz.keySet()) {  // Para cada jugador de la raíz, se obtienen sus stats y se añaden al HashMap
-                JsonObject objetoJSON = raiz.getJsonObject(nombreJugador);
-                Stats s = new Stats(objetoJSON.getInt("WINS"), objetoJSON.getInt("LOSSES"), objetoJSON.getInt("ATTACKS"), objetoJSON.getInt("SUCESS"), objetoJSON.getInt("FAILED"), objetoJSON.getInt("GIVEUP"));
-                resultadoStats.put(nombreJugador, s);
-            }
-        } catch (Exception e) {
-            System.out.println("FALLO AL INTENTAR LEER ESTADÍSTICAS");
+
+    public void ordenarStats() {  // Función encargada de ordenar las estadísticas en orden ascendente, en función del valor de WINS de un jugador
+        List<Map.Entry<String, Stats>> entryList = new ArrayList<>(this.hashMapEstadisticas.entrySet());  // Se transforman las entradas del HashMap en una lista;
+        // Aquí, estamos creando una lista que almacena <Map.Entry<String, Stats>>, reagrupando entonces todo el contenido del HashMap
+        
+        entryList.sort((entry1, entry2) ->  // Ordenamos por WINS de forma ascendente
+            Integer.compare(entry2.getValue().getWins(), entry1.getValue().getWins()));  // Esta línea indica al sort como ordenar, en función de una regla de comparación
+        // Debe retornar lo siguiente, al ejecutar una comparación del estilo (a,b) -> a - b:
+        // - NEGATIVO si a debe ir ANTES que b (si a = 5 y b = 10, 5 - 10 = -5, entonces a va antes de b)
+        // - CERO si son iguales en términos de orden (si a = 5 y b = 5, 5 - 5 = 0, entonces el orden entre a y b da igual)
+        // - POSITIVO si entry1 debe ir DESPUÉS que entry2 (si a = 15 y b = 10, 15 - 10 = 5, entonces a va después de b)
+        
+       this.hashMapEstadisticas.clear();  // Se limpia el mapa para volver a llenarlo
+        for (Map.Entry<String, Stats> entry : entryList) {  // Recorremos la lista ordenada, añadiendo los elementos nuevamente en el HashMap
+            this.hashMapEstadisticas.put(entry.getKey(), entry.getValue());
         }
-        return resultadoStats;  // Se devuelve este HashMap 
     }
+
+    
+    public void iniciarStats() {  // Función para leer estadísticas de un archivo
+    this.hashMapEstadisticas = new LinkedHashMap<>();  // Empezamos por un LinkedHashMap vacío
+    if (!archivoEstadisticas.exists()) {  // Si no existe un archivo de estadísticas, se crea
+        try {
+            archivoEstadisticas.createNewFile();  // Creación del archivo
+            System.out.println("Archivo de estadísticas creado nuevo");  // Realmente estamos guardando un archivo vacío: si antes no existían las estadísticas, no hay información que retomar
+        } catch (IOException ex) {
+            this.refFrame.writeMessage("Error creando archivo: " + ex.getMessage());
+        }
+    }
+
+    try (FileReader reader = new FileReader(this.archivoEstadisticas)) {  // Si ya había algo, lo sacamos
+        // Usamos GSON, una librería de Google para la lectura de JSON
+        Gson gson = new Gson();
+        Type type = new TypeToken<LinkedHashMap<String, Stats>>(){}.getType();  // Declaramos el tipo de dato que buscamos leer
+        this.hashMapEstadisticas = gson.fromJson(reader, type);  // Leemos en el archivo que ya abrímos con anterioridad, almacenando su contenido en el HashMap (es posible, considerando que nuestro type es el mismo que el del HashMap)
+        
+        if (this.hashMapEstadisticas == null) {  // Si el resultado que tenemos es null (inválido), no lo tomamos en cuenta, retornando un HashMap vacío
+            this.hashMapEstadisticas = new LinkedHashMap<>();
+        }
+        
+        System.out.println("Estadísticas cargadas: " + this.hashMapEstadisticas.size() + " jugadores");  // Mensaje para debbug
+        
+        
+    } catch (Exception e) {  // Secuencia de error al leer estadísticas
+        System.out.println("Error leyendo estadísticas: " + e.getMessage());
+        this.hashMapEstadisticas = new LinkedHashMap<>();  // El arreglo estaría mal, entonces se retorna vacío
+    }
+    ordenarStats();  // Ordenamos las stats
+    // Prueba para verificar los datos leídos 
+    this.hashMapEstadisticas.forEach((k, v) -> 
+        System.out.println(k + ": " + v.toString())
+    );
+}
     
     public void crearNuevoJugador(String nombreJugador) {  // Si entra un jugador que no forma parte de los rankings, se añade
         this.hashMapEstadisticas.put(nombreJugador, new Stats());
@@ -138,19 +186,19 @@ public class Server {
 
     public void actualizarStats() {  // Función para guardar actualizaciones en el archivo (cada que hay un cambio): se usa la líbrería GSON
         Gson gson = new Gson();  // Se crea un nuevo Objeto Gson
-        Type typeObject = new TypeToken<HashMap<String, Stats>>() {}.getType();  // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
-        String gsonData = gson.toJson(this.hashMapEstadisticas, typeObject);  // Serializa el diccionario a formato JSON, siguiendo el tipo indicado
+        Type typeObject = new TypeToken<LinkedHashMap<String, Stats>>() {}.getType();  // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
+        String gsonData = gson.toJson(this.hashMapEstadisticas, typeObject);  // Serializa el diccionario this.hashMapEstadisticas a formato JSON, siguiendo el tipo indicado
         
         try (FileWriter writer = new FileWriter(this.archivoEstadisticas, false)) {  // Intentamos crear una escritor en el archivo. El 'false' borra todo el contenido que estaba anteriormente
             writer.write(gsonData);
+            ordenarStats();  // Procedemos a ordenar las stats
             actualizarDatosParaJugadores();
         } catch (IOException e) {  // Si hay una excepción al intentar escribir
-            // this.enviarError("NO SE PUEDE ESCRIBIR EN EL ARCHIVO");  // Si llega a existir un error al intentar escribir, se muestra en la pantalla de la calculadora TODO
+            System.out.println("No se puede escribir en el archivo");  // Si llega a existir un error al intentar escribir, se muestra en consola
         }
     }
     
     public void actualizarDatosParaJugadores() {  // El espacio de texto de DataFrame para cada jugador debe tener la info actualizada, entonces eso se llama en cada iteración
-        // TODO
         /*
         for (ServerThread client : connectedClients) {
             try {
@@ -360,7 +408,7 @@ public class Server {
         return archivoEstadisticas;
     }
 
-    public HashMap<String, Stats> getHashMapEstadisticas() {
+    public LinkedHashMap<String, Stats> getHashMapEstadisticas() {
         return hashMapEstadisticas;
     }
 

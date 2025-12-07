@@ -1,10 +1,11 @@
+package Server;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Server;
 
-import com.mycompany.oceanicwars.Typewritter;
+import com.mycompany.fatality.Typewritter;
 
 /**
  *
@@ -31,7 +32,7 @@ public class ServerFrame extends javax.swing.JFrame {
     }
     
     
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -102,7 +103,7 @@ public class ServerFrame extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
     /**
      * @param args the command line arguments
@@ -130,6 +131,7 @@ public class ServerFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -139,12 +141,11 @@ public class ServerFrame extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txaServerMessages;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 }
-

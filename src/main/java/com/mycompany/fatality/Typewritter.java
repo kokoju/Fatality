@@ -1,4 +1,4 @@
-package com.mycompany.oceanicwars;
+package com.mycompany.fatality;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
