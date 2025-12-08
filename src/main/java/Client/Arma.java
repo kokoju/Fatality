@@ -46,4 +46,8 @@ public class Arma {
     public boolean getFueUsada() {
         return fueUsada;
     }
+    
+    public void setFueUsada(boolean fueUsada) {
+        this.fueUsada = fueUsada;
+    }
 }

@@ -4,23 +4,25 @@
  */
 package Models;
 
+import Client.Arma;
 import Client.Client;
-import Server.ServerThread;
 import Client.Jugador;
+import Peleador.Peleador;
+import Server.ServerThread;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author diego
+ * Maneja comandos Attack <JugadorObjetivo> <PeleadorPropio> <Arma>.
  */
-public class CommandAttack {  // extends Command
-    /*
-    public CommandAttack(String[] args) { // ATTACK Andres 5 7
+public class CommandAttack extends Command {
+
+    public CommandAttack(String[] args) {
         super(CommandType.ATTACK, args);
-        this.consumesTurn = false;
-        this.ownCommand = true;
+        this.consumesTurn = true;
+        this.ownCommand = true; // Se procesa localmente y desde aquí se orquesta el ApplyAttack
+        this.setIsBroadcast(false);
     }
 
     @Override
@@ -29,75 +31,69 @@ public class CommandAttack {  // extends Command
     }
 
     @Override
-    public void processInClient(Client cliente) { // Cliente
-
-        Command sendComando;
-        boolean flag = false; // Indica si se detecta un error
+    public void processInClient(Client cliente) {
         Jugador atacante = cliente.getJugador();
-
-        // Validar que el jugador local esté inicializado
         if (atacante == null) {
-            if (cliente.getRefFrame() != null)
-                cliente.getRefFrame().writeMessage("Imposible realizar ataque: jugador local no inicializado");
+            cliente.getRefFrame().writeMessage("Imposible atacar: tu jugador aún no está inicializado");
             return;
         }
 
-        String[] params = this.getParameters();
+        // Caso cantidad de parámetros insuficiente
+        String[] params = getParameters();
         if (params == null || params.length < 4) {
-            cliente.getRefFrame().writeMessage("Parámetros insuficientes para ATTACK");
+            cliente.getRefFrame().writeMessage("Uso: Attack <Jugador> <Peleador> <Arma>");
             return;
         }
 
-        Hero heroeAtacante = atacante.buscarHeroe(params[2]);
-        // Ver si el heroe existe
-        if (heroeAtacante == null) {
-            cliente.getRefFrame().writeMessage("El heroe escrito no existe");
-            return;
-            
-        // Ver si el ataque y parametros extra son correctos
-        } else {
-        
-            try {
-                heroeAtacante.setMatrizAtaque(atacante.getMatriz());
-            } catch (Exception ignore) {
-        }
-        
-        
-        
-        if (!heroeAtacante.buscarHeroes(params[3])) {   // indice 3 deberia contener el ataque
-            if (params[3].equalsIgnoreCase("ControlTheKraken"))
-                cliente.getRefFrame().writeMessage("Este ataque se encuentra activo de forma pasiva");
-            else 
-                cliente.getRefFrame().writeMessage("El ataque escrito no existe");
+        String targetName = params[1].trim();
+        String fighterName = params[2].trim();
+        String weaponName = params[3].trim();
+
+        if (targetName.isEmpty() || fighterName.isEmpty() || weaponName.isEmpty()) {
+            cliente.getRefFrame().writeMessage("Los parámetros Jugador, Peleador y Arma son obligatorios");
             return;
         }
-    }
+
+        if (cliente.name != null && cliente.name.equalsIgnoreCase(targetName)) {
+            cliente.getRefFrame().writeMessage("No puedes atacarte a ti mismo");
+            return;
+        }
+
+        Peleador peleador = atacante.buscarPeleadorPorNombre(fighterName);
+        if (peleador == null) {
+            cliente.getRefFrame().writeMessage("No tienes un peleador llamado '" + fighterName + "'");
+            return;
+        }
+
+        Arma arma = peleador.buscarArmaPorNombre(weaponName);
+        if (arma == null) {
+            cliente.getRefFrame().writeMessage("El peleador '" + fighterName + "' no tiene un arma '" + weaponName + "'");
+            return;
+        }
+
+        if(arma.getFueUsada()){
+            cliente.getRefFrame().writeMessage("El arma '" + weaponName + "' ya fue usada. Selecciona otra arma.");
+            return;
+        }
+
+        arma.setFueUsada(true);
+
+        String[] newArgs = new String[] {
+            "APPLYATTACK",
+            targetName,   // Jugador objetivo
+            cliente.name, // Nombre del atacante
+        };
+        Command applyAttack = new CommandApplyAttack(newArgs);
         
-        cliente.getJugador().deshabilitarResistencias();
-
-        // Construir payload con HeroPackage
-        String attackerName = cliente.name;
-        String targetName = params[1];
-        // Reconstruir el HeroPackage antes de decidir el heroType
-        HeroPackage hp = null;
-        if (atacante != null) hp = atacante.buildHeroPackage(params[2]);
-        // heroType debe ser el tipo usado por HeroFactory; si no está disponible, usar el nombre de la clase del héroe
-        String heroType = (hp != null && hp.getHeroType() != null) ? hp.getHeroType() : (heroeAtacante != null ? heroeAtacante.getClass().getSimpleName().toUpperCase() : params[2].toUpperCase());
-        String attackType = params[3];
-        String[] extras = new String[params.length - 4];
-        for (int i = 4; i < params.length; i++)
-            extras[i - 4] = params[i];
-
-
-        AttackPayload payload = new AttackPayload(attackerName, targetName, heroType, params[2],attackType, extras, hp);
-        sendComando = new CommandApplyAttack(payload);
-
         try {
-            cliente.objectSender.writeObject(sendComando);
+            cliente.objectSender.writeObject(applyAttack);
+            cliente.getRefFrame().writeMessage("Ataque enviado a '" + targetName + "' usando '" + weaponName + "'");
         } catch (IOException ex) {
             Logger.getLogger(CommandAttack.class.getName()).log(Level.SEVERE, null, ex);
+            cliente.getRefFrame().writeMessage("No se pudo enviar el ataque: " + ex.getMessage());
         }
-
     }
-    */
+
+
+
 }

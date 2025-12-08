@@ -9,7 +9,6 @@ import Models.Command;
 import Models.CommandFactory;
 import Models.CommandType;
 import Models.CommandApplyAttack;
-import Models.AttackPayload;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
@@ -44,7 +43,6 @@ import javax.json.*;
  */
 public class Server {
     private final int PORT = 35500;
-    private final int maxConections = 4;
     private ServerSocket serverSocket;
     private LinkedList<ServerThread> connectedClients; // arreglo de hilos por cada cliente conectado
     // referencia a la pantalla
@@ -184,6 +182,23 @@ public class Server {
         actualizarStats();  // Se actualiza el archivo
     }
 
+    public void aplicarResumenAtaque(String nombreJugador,
+                                     int totalAtaques,
+                                     int exitosos,
+                                     int fallidos) {
+        if (nombreJugador == null || nombreJugador.trim().isEmpty())
+            return;
+        Stats statsJugador = this.hashMapEstadisticas.get(nombreJugador);
+        if (statsJugador == null) {
+            statsJugador = new Stats();
+            this.hashMapEstadisticas.put(nombreJugador, statsJugador);
+        }
+        statsJugador.addAttackSummary(Math.max(0, totalAtaques),
+                                      Math.max(0, exitosos),
+                                      Math.max(0, fallidos));
+        actualizarStats();
+    }
+
     public void actualizarStats() {  // Función para guardar actualizaciones en el archivo (cada que hay un cambio): se usa la líbrería GSON
         Gson gson = new Gson();  // Se crea un nuevo Objeto Gson
         Type typeObject = new TypeToken<LinkedHashMap<String, Stats>>() {}.getType();  // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
@@ -210,45 +225,7 @@ public class Server {
 
     
     public void executeCommand(Command comando, ServerThread origin) {
-        /*
-        // Si es un ApplyyAttack, validar el payload antes de reenviar
-        try {
-            if (comando.getType() == CommandType.APPLYATTACK) {
-
-                if (comando instanceof CommandApplyAttack) {
-
-                    CommandApplyAttack ca = (CommandApplyAttack) comando;
-                    AttackPayload payload = ca.getPayload();
-
-                    if (payload != null && payload.getHeroPackage() != null) {
-                        Hero prueba = HeroFactory.createFromPackage(payload.getHeroPackage());
-                        if (prueba == null) {
-
-                            // Noticar al que envia el ataque que hubo un error utilizando RESULT
-                            String msg = "Server: invalid HeroPackage in attack from '" + payload.getAttackerName()
-                                    + "'";
-                            String[] args = new String[] { "RESULT", origin.name, msg };
-
-                            try {
-                                origin.objectSender.writeObject(CommandFactory.getCommand(args));
-                            } catch (IOException e) {
-                                // ignore
-                            }
-                            return;
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            // validation failure; notificar al server
-            try {
-                String[] args = new String[] { "RESULT", origin.name, "Server: error validating attack payload" };
-                origin.objectSender.writeObject(CommandFactory.getCommand(args));
-            } catch (IOException e) {
-            }
-            return;
-        }
-
+        
         if (comando.getType() == CommandType.SKIP) {
             nextTurn();
         }
@@ -263,14 +240,16 @@ public class Server {
         // Si es comando propio
         else if (comando.isOwnCommand()) {
             processPrivate(comando, origin);
+        }
+            
 
             // Si es uno que se refleja en cliente enemigo
-        } else if (comando.getParameters().length > 1 && this.buscarJugador(comando.getParameters()[1])) { // Enviar
-                                                                                                           // privado
+        else if (comando.getParameters().length > 1 && this.buscarJugador(comando.getParameters()[1])) { // Enviar privado
             this.sendPrivate(comando);
+        }
 
             // Si no se encuentra receptor
-        } else {
+        else {
             String[] args = new String[] { "RESULT", "Server: Jugador objetivo no encontrado" };
             try {
                 origin.objectSender.writeObject(CommandFactory.getCommand(args));
@@ -278,12 +257,13 @@ public class Server {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         // Después de procesar el comando, comprobar condición de victoria
         try {
             GameVictoryManager.checkVictory(this);
         } catch (Exception ignored) {
         }
-        */
+        
     }
 
     public void broadcast(Command comando) {
@@ -369,7 +349,19 @@ public class Server {
 
     public boolean buscarJugador(String searchName) {
         for (ServerThread client : connectedClients) {
-            if (client.name.equalsIgnoreCase(searchName))
+            if (client.name != null && client.name.equalsIgnoreCase(searchName))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isNameTaken(String candidateName, ServerThread requester) {
+        if (candidateName == null)
+            return false;
+        for (ServerThread client : connectedClients) {
+            if (client == null || client == requester)  //En caso de que se verifique el mismo cliente
+                continue;
+            if (client.name != null && client.name.equalsIgnoreCase(candidateName))  //Verificar con distintos clientes, distinto nombre
                 return true;
         }
         return false;
@@ -386,10 +378,6 @@ public class Server {
         for (ServerThread client : connectedClients) {
             this.refFrame.writeMessage(client.name);
         }
-    }
-
-    public int getMaxConections() {
-        return maxConections;
     }
 
     public ServerSocket getServerSocket() {
