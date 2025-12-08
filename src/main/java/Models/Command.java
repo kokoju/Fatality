@@ -22,7 +22,7 @@ public abstract class Command implements Serializable {
 
     public Command(CommandType type, String[] parameters) {
         this.type = type;
-        this.parameters =  parameters; // Enemigo 4 5 6 7 9 10
+        this.parameters =  parameters; // <Tipo comando> como parametro 0
     }
     
     public abstract void processForServer(ServerThread threadServidor);

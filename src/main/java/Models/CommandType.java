@@ -10,13 +10,17 @@ package Models;
  */
 public enum CommandType {
     LOG (1),
-    ATTACK (5),  //attack Andres 4 5
-    APPLYATTACK (4), //
+    ATTACK (6),  //attack <Target> <Peleador> <Arma> <Opcional Peleador> <opcional Arma>
+    APPLYATTACK (3), //
     RESULT (3), // result notifications: RESULT <recipient/optional> <message>
     MESSAGE (2), //message hola a todos
     PRIVATE_MESSAGE(3), //private Andres hola andres
     GIVEUP (1), //giveup
     NAME (2),
+    NAME_HANDSHAKE (3),
+    CREATEFIGHTER (3),
+    ASSIGNWEAPON (3),
+    UPDATESUMMARY (4),
     SKIP (1),
     NEXT (1),
     READY (1),   //ready  -> para iniciar juego

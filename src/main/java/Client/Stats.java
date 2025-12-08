@@ -49,6 +49,15 @@ public class Stats {
             case "GIVEUP" -> ++giveup;
         }
     }
+
+    public void addAttackSummary(int totalAttacks, int successfulAttacks, int failedAttacks) {
+        if (totalAttacks > 0)
+            this.attacks += totalAttacks;
+        if (successfulAttacks > 0)
+            this.sucess += successfulAttacks;
+        if (failedAttacks > 0)
+            this.failed += failedAttacks;
+    }
     
     // Getters
     public int getWins() {
