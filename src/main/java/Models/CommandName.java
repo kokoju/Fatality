@@ -5,6 +5,7 @@
 package Models;
 
 import Client.Client;
+import Client.Jugador;
 import Server.Server;
 import Server.ServerThread;
 import java.io.IOException;
@@ -13,9 +14,9 @@ import java.io.IOException;
  *
  * @author diego
  */
-public class CommandName extends Command{
-    
-    public CommandName(String[] args) { //name Diego
+public class CommandName extends Command {
+
+    public CommandName(String[] args) { // name Diego
         super(CommandType.NAME, args);
         this.consumesTurn = false;
         this.ownCommand = true;
@@ -39,24 +40,35 @@ public class CommandName extends Command{
         this.setIsBroadcast(true);
         serverThread.name = requestedName;
         serverThread.showAllClients();
-                      
-        if (!serverThread.getServer().getHashMapEstadisticas().containsKey(serverThread.name))  // Si el cliente no era parte del arreglo de datos, se le genera un espacio en el archivo
+
+        if (!serverThread.getServer().getHashMapEstadisticas().containsKey(serverThread.name)) // Si el cliente no era
+                                                                                               // parte del arreglo de
+                                                                                               // datos, se le genera un
+                                                                                               // espacio en el archivo
             serverThread.getServer().crearNuevoJugador(serverThread.name);
     }
-    
+
     @Override
     public void processInClient(Client client) {
-        //NAME Nombre de persona
-        client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
-         
+        // NAME Nombre de persona
+        String nombre = this.getParameters()[1];
+        client.getRefFrame().writeMessage("Conectado el cliente: " + nombre);
+
+        // Inicializa el Jugador en el cliente al confirmar el nombre
+        if (client.getJugador() == null) {
+            client.setJugador(new Jugador(client.getRefFrame(), nombre));
+            client.getRefFrame().writeMessage("Jugador inicializado: " + nombre);
+        }
+
     }
 
     private void notifyHandshake(ServerThread serverThread, String requestedName, String reason) {
-        String[] args = new String[]{"NAME_HANDSHAKE", requestedName, reason};
+        String[] args = new String[] { "NAME_HANDSHAKE", requestedName, reason };
         try {
             serverThread.objectSender.writeObject(CommandFactory.getCommand(args));
         } catch (IOException ex) {
-            serverThread.getServer().getRefFrame().writeMessage("No se pudo enviar handshake de nombre: " + ex.getMessage());
+            serverThread.getServer().getRefFrame()
+                    .writeMessage("No se pudo enviar handshake de nombre: " + ex.getMessage());
         }
     }
 
