@@ -68,6 +68,16 @@ public class FrameClient extends javax.swing.JFrame {
         pnlAttack1 = new javax.swing.JPanel();
         pnlAttack2 = new javax.swing.JPanel();
         pnlMenu = new javax.swing.JPanel();
+        YOURTEAM = new javax.swing.JLabel();
+        Luchador2 = new javax.swing.JLabel();
+        Luchador1 = new javax.swing.JLabel();
+        Luchador4 = new javax.swing.JLabel();
+        Luchador3 = new javax.swing.JLabel();
+        nombreLuchador = new javax.swing.JLabel();
+        arma1 = new javax.swing.JLabel();
+        arma4 = new javax.swing.JLabel();
+        arma2 = new javax.swing.JLabel();
+        arma3 = new javax.swing.JLabel();
         txfInput = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -102,6 +112,8 @@ public class FrameClient extends javax.swing.JFrame {
         txaStats.setFocusable(false);
         jScrollPane3.setViewportView(txaStats);
 
+        pnlAttack1.setBackground(new java.awt.Color(51, 51, 51));
+
         javax.swing.GroupLayout pnlAttack1Layout = new javax.swing.GroupLayout(pnlAttack1);
         pnlAttack1.setLayout(pnlAttack1Layout);
         pnlAttack1Layout.setHorizontalGroup(
@@ -112,6 +124,8 @@ public class FrameClient extends javax.swing.JFrame {
             pnlAttack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 260, Short.MAX_VALUE)
         );
+
+        pnlAttack2.setBackground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout pnlAttack2Layout = new javax.swing.GroupLayout(pnlAttack2);
         pnlAttack2.setLayout(pnlAttack2Layout);
@@ -124,15 +138,96 @@ public class FrameClient extends javax.swing.JFrame {
             .addGap(0, 278, Short.MAX_VALUE)
         );
 
+        pnlMenu.setBackground(new java.awt.Color(102, 255, 102));
+
+        YOURTEAM.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        YOURTEAM.setText("YOUR TEAM");
+
+        Luchador2.setText("jLabel2");
+        Luchador2.setOpaque(true);
+
+        Luchador1.setBackground(new java.awt.Color(255, 51, 51));
+        Luchador1.setText("jLabel2");
+        Luchador1.setOpaque(true);
+
+        Luchador4.setText("jLabel2");
+        Luchador4.setOpaque(true);
+
+        Luchador3.setBackground(new java.awt.Color(255, 51, 51));
+        Luchador3.setText("jLabel2");
+        Luchador3.setOpaque(true);
+
+        nombreLuchador.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        nombreLuchador.setForeground(new java.awt.Color(204, 0, 51));
+        nombreLuchador.setText("nombre del heroe");
+
+        arma1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        arma1.setForeground(new java.awt.Color(255, 0, 102));
+        arma1.setText("arma1");
+
+        arma4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        arma4.setForeground(new java.awt.Color(255, 0, 102));
+        arma4.setText("arma4");
+
+        arma2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        arma2.setForeground(new java.awt.Color(255, 0, 102));
+        arma2.setText("arma2");
+
+        arma3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        arma3.setForeground(new java.awt.Color(255, 0, 102));
+        arma3.setText("arma3");
+
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 550, Short.MAX_VALUE)
+            .addGroup(pnlMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMenuLayout.createSequentialGroup()
+                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(YOURTEAM)
+                            .addGroup(pnlMenuLayout.createSequentialGroup()
+                                .addComponent(Luchador1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Luchador2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Luchador3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Luchador4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nombreLuchador)
+                            .addComponent(arma3)
+                            .addComponent(arma4))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlMenuLayout.createSequentialGroup()
+                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(arma2)
+                            .addComponent(arma1))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 544, Short.MAX_VALUE)
+            .addGroup(pnlMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(YOURTEAM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Luchador1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Luchador2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Luchador3, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Luchador4, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(nombreLuchador)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(arma1)
+                .addGap(18, 18, 18)
+                .addComponent(arma2)
+                .addGap(18, 18, 18)
+                .addComponent(arma3)
+                .addGap(18, 18, 18)
+                .addComponent(arma4)
+                .addGap(16, 16, 16))
         );
 
         btnSend.setBackground(new java.awt.Color(0, 204, 0));
@@ -155,6 +250,11 @@ public class FrameClient extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 1122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 88, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -198,6 +298,10 @@ public class FrameClient extends javax.swing.JFrame {
                         .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39))
         );
 
@@ -230,11 +334,21 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Luchador1;
+    private javax.swing.JLabel Luchador2;
+    private javax.swing.JLabel Luchador3;
+    private javax.swing.JLabel Luchador4;
+    private javax.swing.JLabel YOURTEAM;
+    private javax.swing.JLabel arma1;
+    private javax.swing.JLabel arma2;
+    private javax.swing.JLabel arma3;
+    private javax.swing.JLabel arma4;
     private javax.swing.JButton btnSend;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel nombreLuchador;
     private javax.swing.JPanel pnlAttack1;
     private javax.swing.JPanel pnlAttack2;
     private javax.swing.JPanel pnlMenu;
