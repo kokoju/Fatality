@@ -25,7 +25,7 @@ public class ConnectionThread extends Thread {
     public void run() {
         Socket newSocket = null;
         server.getRefFrame().writeMessage("Esperando conexiones");
-        while (!Thread.currentThread().isInterrupted()) {
+        while (server.getConnectedClients().size() < server.getMaxConections() ){
             try {
                 newSocket = server.getServerSocket().accept();
                 //una vez con socket recibido, se crea e inicia el thread que va a anteder y escuchar al clinete que los conectó
@@ -39,8 +39,9 @@ public class ConnectionThread extends Thread {
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
                 //server.getRefFrame().writeMessage("Error: " +  ex.getMessage());
-            } 
+            }
         }
+        
     }
     
 }

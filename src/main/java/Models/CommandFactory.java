@@ -15,10 +15,8 @@ public class CommandFactory {
         String type = args[0].toUpperCase();
         
         switch (type) {
-            case "ATTACK":
-                return new CommandAttack(args);
-            case "APPLYATTACK":
-                return new CommandApplyAttack(args);
+            // case "ATTACK":
+                // return new CommandAttack(args);
             case "MESSAGE":
                 return new CommandMessage(args);
             case "RESULT":
@@ -29,12 +27,8 @@ public class CommandFactory {
                 return new CommandGiveup(args);
             case "NAME":
                 return new CommandName(args);
-            case "NAME_HANDSHAKE":
-                return new CommandNameHandshake(args);
-            case "CREATEFIGHTER":
-                return new CommandCreateFighter(args);
-            case "ASSIGNWEAPON":
-                return new CommandAssignWeapon(args);
+            // case "BOOST":
+                // return new CommandBoost(args);
             case "LOG":
                 return new CommandLog(args);
             case "READY":

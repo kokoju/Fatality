@@ -6,7 +6,6 @@ package Client;
 
 import Client.FrameClient;
 import Peleador.Peleador;
-import Peleador.Tipo;
 
 /**
  *
@@ -16,13 +15,14 @@ public class Jugador {
     // Atributos
     FrameClient cliente;  // El jugador tiene una referencia a su cliente
     String nombre;  // Nombre del jugador (usado como su ID para el ranking y los registros)
-    Peleador[] peleadores = new Peleador[4];  // Arreglo que almacena los 4 peleadores del jugador
+    Peleador[] peleadores;  // Arreglo que almacena los 4 peleadores del jugador
     boolean tieneComodin;  // Booleano que indica si el usuario tiene un comodín disponible
     
     // Constructor
-    public Jugador(FrameClient cliente, String nombre) {
+    public Jugador(FrameClient cliente, String nombre, Peleador[] peleadores) {
         this.cliente = cliente;
         this.nombre = nombre;
+        this.peleadores = peleadores;
         this.tieneComodin = false;  // El jugador empieza sin comodín, entonces se pone en false
     }
     
@@ -33,14 +33,6 @@ public class Jugador {
         }
         else return null;
     }
-
-    public Peleador obtenerPrimerPeleadorActivo() {
-        for (Peleador peleador : peleadores) {
-            if (peleador != null && peleador.getActivo())
-                return peleador;
-        }
-        return null;
-    }
     
     public boolean verificarSiDerrota() {  // Función para verificar si todos los peleadores del jugador fueron derrotados
         boolean derrotado = true;  // Al principio, suponemos que el jugador fue derrotado
@@ -50,45 +42,6 @@ public class Jugador {
             }
         }
         return derrotado;  // Se devuelve el booleano obtenido
-    }
-
-
-
-    public boolean registrarNombrePeleador(String nombrePeleador, Tipo tipo) {
-        if (nombrePeleador == null || tipo == null)
-            return false;
-
-        String limpio = nombrePeleador.trim();
-        if (limpio.isEmpty() || tienePeleador(limpio)) //Si esta vacio o duplicado false -> no se registro
-            return false;
-
-        for (int i = 0; i < peleadores.length; i++) {
-            if (peleadores[i] == null) {
-                peleadores[i] = new Peleador(limpio, tipo);
-                return true;                         // Si no, entonces se registra y se retorna true
-            }
-        }
-        return false;
-    }
-
-    public Peleador buscarPeleadorPorNombre(String nombrePeleador) {
-        if (nombrePeleador == null)
-            return null;
-        String buscado = nombrePeleador.trim().toUpperCase();
-
-        for (Peleador peleador : peleadores) {
-            if (peleador == null)
-                continue;
-            String nombreActual = peleador.getNombre();
-            if (nombreActual != null && nombreActual.trim().toUpperCase().equals(buscado))
-                return peleador;
-        }
-        return null;
-    }
-
-    //Misma funcion que buscarPeleadorPorNombre pero retorna un booleano, mienstras que la otra retorna el peleador como tal
-    public boolean tienePeleador(String nombrePeleador) {
-        return buscarPeleadorPorNombre(nombrePeleador) != null;
     }
     
     // Getters

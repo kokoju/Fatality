@@ -5,9 +5,7 @@
 package Models;
 
 import Client.Client;
-import Server.Server;
 import Server.ServerThread;
-import java.io.IOException;
 
 /**
  *
@@ -23,21 +21,8 @@ public class CommandName extends Command{
 
     @Override
     public void processForServer(ServerThread serverThread) {
-        String requestedName = getParameters()[1].trim();
-        Server server = serverThread.getServer();
-
-        if (requestedName.isEmpty()) {
-            notifyHandshake(serverThread, requestedName, "El nombre no puede estar vacío.");
-            return;
-        }
-
-        if (server.isNameTaken(requestedName, serverThread)) {
-            notifyHandshake(serverThread, requestedName, "Ese nombre ya está en uso.");
-            return;
-        }
-
         this.setIsBroadcast(true);
-        serverThread.name = requestedName;
+        serverThread.name = getParameters()[1];
         serverThread.showAllClients();
                       
         if (!serverThread.getServer().getHashMapEstadisticas().containsKey(serverThread.name))  // Si el cliente no era parte del arreglo de datos, se le genera un espacio en el archivo
@@ -47,17 +32,8 @@ public class CommandName extends Command{
     @Override
     public void processInClient(Client client) {
         //NAME Nombre de persona
-        client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
+        //client.getRefFrame().writeMessage("Conectado el cliente: " + this.getParameters()[1]);
          
-    }
-
-    private void notifyHandshake(ServerThread serverThread, String requestedName, String reason) {
-        String[] args = new String[]{"NAME_HANDSHAKE", requestedName, reason};
-        try {
-            serverThread.objectSender.writeObject(CommandFactory.getCommand(args));
-        } catch (IOException ex) {
-            serverThread.getServer().getRefFrame().writeMessage("No se pudo enviar handshake de nombre: " + ex.getMessage());
-        }
     }
 
 }
