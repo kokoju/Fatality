@@ -67,6 +67,12 @@ public class CommandAttack extends Command {
             return;
         }
 
+        // Verificar que el peleador esté vivo
+        if (!peleador.getActivo() || peleador.getVida() <= 0) {
+            cliente.getRefFrame().writeMessage("El peleador '" + fighterName + "' está muerto y no puede atacar");
+            return;
+        }
+
         Arma arma = peleador.buscarArmaPorNombre(weaponName);
         if (arma == null) {
             cliente.getRefFrame()

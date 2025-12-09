@@ -114,6 +114,38 @@ public class CommandApplyAttack extends Command {
                 dañosPorLuchador);
 
         enviarResumen(clienteAtacado, dañoTotal, totalAttacks, succesfullattacks, failedattacks);
+
+        // Verificar si el jugador fue derrotado (todos sus luchadores muertos)
+        verificarDerrota(clienteAtacado, jugador);
+    }
+
+    /**
+     * Verifica si todos los luchadores del jugador están muertos.
+     * Si es así, envía un comando al servidor para marcar al jugador como
+     * derrotado.
+     */
+    private void verificarDerrota(Client clienteAtacado, Jugador jugador) {
+        boolean todosmuertos = true;
+        Peleador[] peleadores = jugador.getPeleadores();
+
+        for (Peleador p : peleadores) {
+            if (p != null && p.getActivo() && p.getVida() > 0) {
+                todosmuertos = false;
+                break;
+            }
+        }
+
+        if (todosmuertos) {
+            clienteAtacado.getRefFrame().writeMessage("¡Todos tus luchadores han sido derrotados!");
+            // Enviar comando de derrota al servidor
+            try {
+                String[] args = new String[] { "GIVEUP" };
+                Command derrotaCmd = CommandFactory.getCommand(args);
+                clienteAtacado.objectSender.writeObject(derrotaCmd);
+            } catch (IOException ex) {
+                // Ignorar error de envío
+            }
+        }
     }
 
     /**
