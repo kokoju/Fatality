@@ -21,13 +21,15 @@ public class CommandAttack extends Command {
     public CommandAttack(String[] args) {
         super(CommandType.ATTACK, args);
         this.consumesTurn = true;
-        this.ownCommand = true; // Se procesa localmente y desde aquí se orquesta el ApplyAttack
+        this.ownCommand = false; // Se envía al servidor para validar turno primero
         this.setIsBroadcast(false);
     }
 
     @Override
     public void processForServer(ServerThread serverThread) {
+        // El servidor valida el turno y reenvía al atacante para que lo procese
         this.setIsBroadcast(false);
+        this.ownCommand = true; // Ahora se procesa en el cliente del atacante
     }
 
     @Override
@@ -79,30 +81,35 @@ public class CommandAttack extends Command {
 
         arma.setFueUsada(true);
 
+        // Convertir array de daños a string para enviarlo
+        int[] daños = arma.getArregloGolpe();
+        StringBuilder dañosStr = new StringBuilder();
+        if (daños != null) {
+            for (int i = 0; i < daños.length; i++) {
+                if (i > 0)
+                    dañosStr.append(",");
+                dañosStr.append(daños[i]);
+            }
+        }
+
         String[] newArgs = new String[] {
                 "APPLYATTACK",
                 targetName, // Jugador objetivo
                 cliente.name, // Nombre del atacante
                 fighterName, // Nombre del peleador
-                weaponName // Nombre del arma
+                weaponName, // Nombre del arma
+                dañosStr.toString() // Daños del arma (formato: "d0,d1,d2,...")
         };
         Command applyAttack = new CommandApplyAttack(newArgs);
-
-        // Calcular daño total para mostrar en panel de ataque realizado
-        int dañoTotal = 0;
-        int[] daños = arma.getArregloGolpe();
-        if (daños != null) {
-            for (int d : daños) {
-                dañoTotal += d;
-            }
-        }
 
         try {
             cliente.objectSender.writeObject(applyAttack);
             cliente.getRefFrame().writeMessage("Ataque enviado a '" + targetName + "' usando '" + weaponName + "'");
-            // Actualizar panel de ataque realizado
-            cliente.getRefFrame().actualizarAtaqueRealizado(fighterName, dañoTotal);
+            // El panel de ataque realizado se actualizará cuando llegue la confirmación del
+            // servidor
         } catch (IOException ex) {
+            // Si falla el envío, revertir el uso del arma
+            arma.setFueUsada(false);
             Logger.getLogger(CommandAttack.class.getName()).log(Level.SEVERE, null, ex);
             cliente.getRefFrame().writeMessage("No se pudo enviar el ataque: " + ex.getMessage());
         }

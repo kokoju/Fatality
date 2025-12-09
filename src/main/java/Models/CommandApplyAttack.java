@@ -29,10 +29,24 @@ public class CommandApplyAttack extends Command {
         this.attackerFighterName = args.length > 3 ? args[3] : "";
         this.weaponName = args.length > 4 ? args[4] : "";
 
+        // Parsear los daños del arma (formato: "d0,d1,d2,...")
+        if (args.length > 5 && args[5] != null && !args[5].isEmpty()) {
+            String[] partes = args[5].split(",");
+            this.weaponDamages = new int[partes.length];
+            for (int i = 0; i < partes.length; i++) {
+                try {
+                    this.weaponDamages[i] = Integer.parseInt(partes[i].trim());
+                } catch (NumberFormatException e) {
+                    this.weaponDamages[i] = 0;
+                }
+            }
+        } else {
+            this.weaponDamages = new int[0];
+        }
+
         this.consumesTurn = true;
         this.ownCommand = false;
         this.setIsBroadcast(false);
-
     }
 
     @Override
@@ -58,7 +72,8 @@ public class CommandApplyAttack extends Command {
                 continue;
             }
 
-            int dano = 0; // TODO: calcular el daño real usando la tabla del arma
+            // Calcular daño basado en el tipo del peleador objetivo
+            int dano = calcularDañoContraPeleador(objetivo);
             dañosPorLuchador[i] = dano;
             totalAttacks++;
             if (dano >= MIN_SUCCESS_DAMAGE) {
@@ -69,35 +84,39 @@ public class CommandApplyAttack extends Command {
             }
         }
 
-        // Actualizar panel de ataque recibido
-        clienteAtacado.getRefFrame().actualizarAtaqueRecibido(attackerFighterName, dañosPorLuchador);
+        // Calcular daño total
+        int dañoTotal = 0;
+        for (int d : dañosPorLuchador) {
+            if (d >= MIN_SUCCESS_DAMAGE) {
+                dañoTotal += d;
+            }
+        }
 
-        enviarResumen(clienteAtacado, totalAttacks, succesfullattacks, failedattacks);
+        // Actualizar panel de ataque recibido con info completa
+        clienteAtacado.getRefFrame().actualizarAtaqueRecibido(
+                attackerName,
+                attackerFighterName,
+                weaponName,
+                dañosPorLuchador);
+
+        enviarResumen(clienteAtacado, dañoTotal, totalAttacks, succesfullattacks, failedattacks);
     }
 
-    /*
-     * TODO logica para obtener dano de un arma respecto al tipo de un peleador
-     * private int damageAgainst(Peleador objetivo) {
-     * if (objetivo == null || weaponDamages.length == 0)
-     * return 0;
-     * int index = objetivo.getTipo().ordinal();
-     * if (index < 0 || index >= weaponDamages.length)
-     * return 0;
-     * return weaponDamages[index];
-     * }
+    /**
+     * Calcula el daño que el arma causa a un peleador según su tipo.
+     * Usa el ordinal del Tipo para indexar el arregloGolpe del arma.
      */
-    /*
-     * TODO logica para tener las armas creadas, asi obtener sus daños respecto a
-     * tipos de peleadores
-     * private int[] ensureWeaponDamages() {
-     * if (weaponDamages != null && weaponDamages.length > 0)
-     * return weaponDamages;
-     * weaponDamages = GlobalArmory.getWeaponDamages(weaponName);
-     * return weaponDamages == null ? new int[0] : weaponDamages;
-     * }
-     */
+    private int calcularDañoContraPeleador(Peleador objetivo) {
+        if (objetivo == null || weaponDamages == null || weaponDamages.length == 0)
+            return 0;
+        int index = objetivo.getTipo().ordinal();
+        if (index < 0 || index >= weaponDamages.length)
+            return 0;
+        return weaponDamages[index];
+    }
 
     private void enviarResumen(Client clienteAtacado,
+            int dañoTotal,
             int totalAttacks,
             int successfulAttacks,
             int failedAttacks) {
@@ -105,8 +124,19 @@ public class CommandApplyAttack extends Command {
             return;
         if (attackerName == null || attackerName.trim().isEmpty())
             return;
+
+        // Obtener el nombre del jugador atacado
+        String targetName = "";
+        if (clienteAtacado.name != null) {
+            targetName = clienteAtacado.name;
+        }
+
         CommandUpdateSummary summary = new CommandUpdateSummary(
                 attackerName,
+                attackerFighterName,
+                weaponName,
+                targetName,
+                dañoTotal,
                 totalAttacks,
                 successfulAttacks,
                 failedAttacks);

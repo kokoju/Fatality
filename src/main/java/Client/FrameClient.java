@@ -112,6 +112,7 @@ public class FrameClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -180,7 +181,7 @@ public class FrameClient extends javax.swing.JFrame {
 
         pnlAtaqueRecibido.setBackground(new java.awt.Color(51, 51, 51));
 
-        InformacionAtaqueRecibido.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        InformacionAtaqueRecibido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         InformacionAtaqueRecibido.setText("Último ataque recibido");
 
         javax.swing.GroupLayout pnlAtaqueRecibidoLayout = new javax.swing.GroupLayout(pnlAtaqueRecibido);
@@ -192,25 +193,26 @@ public class FrameClient extends javax.swing.JFrame {
                                 .addComponent(InformacionAtaqueRecibido)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 156,
+                                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 166,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap()));
         pnlAtaqueRecibidoLayout.setVerticalGroup(
                 pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(pnlAtaqueRecibidoLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(Agresor, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
-                                                .addComponent(InformacionAtaqueRecibido)
-                                                .addGap(0, 232, Short.MAX_VALUE)))
-                                .addContainerGap()));
+                                                .addContainerGap()
+                                                .addComponent(InformacionAtaqueRecibido))
+                                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 233,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(16, Short.MAX_VALUE)));
 
         pnlAtaqueEnviado.setBackground(new java.awt.Color(51, 51, 51));
 
-        InformacionAtaqueRealizado.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        InformacionAtaqueRealizado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         InformacionAtaqueRealizado.setText("Último ataque realizado");
 
         javax.swing.GroupLayout pnlAtaqueEnviadoLayout = new javax.swing.GroupLayout(pnlAtaqueEnviado);
@@ -219,25 +221,26 @@ public class FrameClient extends javax.swing.JFrame {
                 pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                 pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                        .addContainerGap()
+                                        .addGap(14, 14, 14)
                                         .addComponent(InformacionAtaqueRealizado)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144,
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132,
                                                 Short.MAX_VALUE)
-                                        .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 156,
+                                        .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 160,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addContainerGap()));
         pnlAtaqueEnviadoLayout.setVerticalGroup(
                 pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(pnlAtaqueEnviadoLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                                .addComponent(InformacionAtaqueRealizado)
-                                                .addGap(0, 232, Short.MAX_VALUE))
-                                        .addComponent(Atacante, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap()));
+                                                .addContainerGap()
+                                                .addComponent(InformacionAtaqueRealizado))
+                                        .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 230,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(25, Short.MAX_VALUE)));
 
         pnlMenu.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -490,7 +493,7 @@ public class FrameClient extends javax.swing.JFrame {
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(12, 12, 12)))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17,
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11,
                                         Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
@@ -655,10 +658,15 @@ public class FrameClient extends javax.swing.JFrame {
             stats5.setText("");
             return;
         }
-        // Formatear nombre sin barras bajas y con mayúsculas, más vida en %
+        // Formatear nombre sin barras bajas y con mayúsculas, más tipo con color y vida
+        // en %
         String nombreFormateado = formatearNombreLuchador(p.getNombre());
         int vidaPorcentaje = p.getVida();
-        nombreLuchador.setText(nombreFormateado + " (" + vidaPorcentaje + "%)");
+        String colorTipo = getColorTipo(p.getTipo());
+        String tipoStr = p.getTipo() != null ? p.getTipo().toString() : "";
+        nombreLuchador.setText("<html>" + nombreFormateado +
+                " <font color='" + colorTipo + "'>[" + tipoStr + "]</font>" +
+                " (" + vidaPorcentaje + "%)</html>");
         Arma[] armas = p.getArregloArmas();
         if (armas == null || armas.length == 0) {
             arma1.setText("(sin armas)");
@@ -711,18 +719,23 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     /**
-     * Convierte un array de daños en una cadena con valores separados por espacios.
+     * Convierte un array de daños en HTML con cada valor coloreado según su tipo.
      */
     private String formatearArrayDaño(int[] daños) {
         if (daños == null || daños.length == 0)
             return "";
         StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
         for (int i = 0; i < daños.length; i++) {
+            String color = getColorTipoPorIndice(i);
+            sb.append("<font color='").append(color).append("'>");
             sb.append(daños[i]);
+            sb.append("</font>");
             if (i < daños.length - 1) {
-                sb.append("   ");
+                sb.append("&nbsp;&nbsp;&nbsp;&nbsp;"); // Más espacio entre números
             }
         }
+        sb.append("</html>");
         return sb.toString();
     }
 
@@ -748,6 +761,47 @@ public class FrameClient extends javax.swing.JFrame {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Colores asignados a cada tipo de luchador.
+     * Orden: FUEGO, AIRE, AGUA, TIERRA, VOLADOR, VENENO, HIELO, METAL, PSIQUICO,
+     * HADA
+     */
+    private static final String[] COLORES_TIPO = {
+            "#FF4500", // FUEGO - Naranja rojizo
+            "#87CEEB", // AIRE - Celeste
+            "#1E90FF", // AGUA - Azul
+            "#8B4513", // TIERRA - Marrón
+            "#9370DB", // VOLADOR - Púrpura medio
+            "#9932CC", // VENENO - Violeta oscuro
+            "#00CED1", // HIELO - Turquesa
+            "#708090", // METAL - Gris pizarra
+            "#FF1493", // PSIQUICO - Rosa intenso
+            "#FFB6C1" // HADA - Rosa claro
+    };
+
+    /**
+     * Obtiene el color hexadecimal asignado a un tipo de luchador.
+     */
+    private String getColorTipo(Tipo tipo) {
+        if (tipo == null)
+            return "#000000";
+        int index = tipo.ordinal();
+        if (index >= 0 && index < COLORES_TIPO.length) {
+            return COLORES_TIPO[index];
+        }
+        return "#000000";
+    }
+
+    /**
+     * Obtiene el color hexadecimal para un índice de tipo.
+     */
+    private String getColorTipoPorIndice(int index) {
+        if (index >= 0 && index < COLORES_TIPO.length) {
+            return COLORES_TIPO[index];
+        }
+        return "#000000";
     }
 
     /**
@@ -866,10 +920,11 @@ public class FrameClient extends javax.swing.JFrame {
 
     // Métodos para actualizar paneles de ataque
     /**
-     * Actualiza el panel de ataque realizado con la imagen del peleador atacante
-     * y el daño total causado.
+     * Actualiza el panel de ataque realizado con la imagen del peleador atacante,
+     * información del objetivo, arma usada y daño total causado.
      */
-    public void actualizarAtaqueRealizado(String nombrePeleador, int dañoTotal) {
+    public void actualizarAtaqueRealizado(String nombrePeleador, String nombreArma, String jugadorObjetivo,
+            int dañoTotal, int golpesExitosos) {
         // Establecer imagen del peleador atacante
         javax.swing.ImageIcon icon = cargarImagenPeleador(nombrePeleador);
         if (icon != null) {
@@ -886,16 +941,25 @@ public class FrameClient extends javax.swing.JFrame {
             java.awt.Image scaled = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
             Atacante.setIcon(new javax.swing.ImageIcon(scaled));
         }
-        // Mostrar daño total realizado con nombre formateado
+        // Mostrar información del ataque con daño total
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
         String nombreFormateado = formatearNombreLuchador(nombrePeleador);
-        InformacionAtaqueRealizado.setText(nombreFormateado + " - Daño total: " + dañoTotal);
+        sb.append("<b>").append(nombreFormateado).append("</b> atacó a <b>").append(jugadorObjetivo).append("</b><br>");
+        sb.append("Arma: <b>").append(nombreArma).append("</b><br><br>");
+        sb.append("<font size='+1'><b>Daño total causado: ").append(dañoTotal).append("</b></font><br>");
+        sb.append("Golpes exitosos: <b>").append(golpesExitosos).append("</b>");
+        sb.append("</html>");
+        InformacionAtaqueRealizado.setText(sb.toString());
     }
 
     /**
-     * Actualiza el panel de ataque recibido con la imagen del agresor
-     * y el daño individual recibido por cada luchador.
+     * Actualiza el panel de ataque recibido con la imagen del agresor,
+     * información del atacante, arma usada y el daño individual recibido por cada
+     * luchador.
      */
-    public void actualizarAtaqueRecibido(String nombreAgresor, int[] dañosPorLuchador) {
+    public void actualizarAtaqueRecibido(String nombreJugador, String nombreAgresor, String nombreArma,
+            int[] dañosPorLuchador) {
         // Establecer imagen del agresor
         javax.swing.ImageIcon icon = cargarImagenPeleador(nombreAgresor);
         if (icon != null) {
@@ -912,24 +976,63 @@ public class FrameClient extends javax.swing.JFrame {
             java.awt.Image scaled = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
             Agresor.setIcon(new javax.swing.ImageIcon(scaled));
         }
-        // Mostrar daño recibido por cada luchador
+        // Mostrar información completa del ataque recibido
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
+        sb.append("<b>").append(nombreJugador).append("</b> atacó con <b>")
+                .append(formatearNombreLuchador(nombreAgresor)).append("</b><br>");
+        sb.append("Arma: <b>").append(nombreArma).append("</b><br><br>");
+
         Jugador j = null;
         if (client != null) {
             j = client.getJugador();
         }
+        int dañoTotal = 0;
         if (j != null && dañosPorLuchador != null) {
             Peleador[] peleadores = j.getPeleadores();
             for (int i = 0; i < dañosPorLuchador.length && i < peleadores.length; i++) {
                 if (peleadores[i] != null) {
                     String nombreFormateado = formatearNombreLuchador(peleadores[i].getNombre());
-                    sb.append(nombreFormateado).append(": -").append(dañosPorLuchador[i]).append(" HP<br>");
+                    String colorTipo = getColorTipo(peleadores[i].getTipo());
+                    String tipoStr = peleadores[i].getTipo() != null ? peleadores[i].getTipo().toString() : "";
+                    int daño = dañosPorLuchador[i];
+                    dañoTotal += daño;
+                    String estado = daño >= 60 ? " <b>¡Golpe!</b>" : " (Falló)";
+                    sb.append(nombreFormateado);
+                    sb.append(" <font color='").append(colorTipo).append("'>[").append(tipoStr).append("]</font>");
+                    sb.append(" recibió <b>").append(daño).append("</b>").append(estado);
+                    sb.append("<br>");
                 }
             }
         }
+        sb.append("<br><b>Daño total recibido: ").append(dañoTotal).append("</b>");
         sb.append("</html>");
         InformacionAtaqueRecibido.setText(sb.toString());
+
+        // Actualizar vida de luchadores en el panel de menú
+        actualizarVidasLuchadores();
+    }
+
+    /**
+     * Actualiza las vidas mostradas de los luchadores después de recibir un ataque.
+     */
+    private void actualizarVidasLuchadores() {
+        if (client == null)
+            return;
+        Jugador j = client.getJugador();
+        if (j == null)
+            return;
+        Peleador[] peleadores = j.getPeleadores();
+
+        // Actualizar los nombres en los labels con las vidas actualizadas
+        javax.swing.JLabel[] labels = { Luchador1, Luchador2, Luchador3, Luchador4 };
+        for (int i = 0; i < peleadores.length && i < labels.length; i++) {
+            if (peleadores[i] != null) {
+                String nombre = formatearNombreLuchador(peleadores[i].getNombre());
+                int vida = peleadores[i].getVida();
+                labels[i].setToolTipText(nombre + " (" + vida + "%)");
+            }
+        }
     }
 
     /**
