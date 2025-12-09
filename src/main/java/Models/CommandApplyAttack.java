@@ -25,9 +25,23 @@ public class CommandApplyAttack extends Command {
 
     public CommandApplyAttack(String[] args) {
         super(CommandType.APPLYATTACK, args); // 0 -> APPLYATTACK , 1 -> targetName
-        this.attackerName = args.length > 2 ? args[2] : "";
-        this.attackerFighterName = args.length > 3 ? args[3] : "";
-        this.weaponName = args.length > 4 ? args[4] : "";
+        if (args.length > 2) {
+            this.attackerName = args[2];
+        } else {
+            this.attackerName = "";
+        }
+
+        if (args.length > 3) {
+            this.attackerFighterName = args[3];
+        } else {
+            this.attackerFighterName = "";
+        }
+
+        if (args.length > 4) {
+            this.weaponName = args[4];
+        } else {
+            this.weaponName = "";
+        }
 
         // Parsear los daños del arma (formato: "d0,d1,d2,...")
         if (args.length > 5 && args[5] != null && !args[5].isEmpty()) {
@@ -44,7 +58,7 @@ public class CommandApplyAttack extends Command {
             this.weaponDamages = new int[0];
         }
 
-        this.consumesTurn = true;
+        this.consumesTurn = false; // No consume turno, es parte del flujo del ataque
         this.ownCommand = false;
         this.setIsBroadcast(false);
     }
@@ -56,7 +70,6 @@ public class CommandApplyAttack extends Command {
 
     @Override
     public void processInClient(Client clienteAtacado) {
-
         Jugador jugador = clienteAtacado.getJugador();
         Peleador[] peleadores = jugador.getPeleadores();
 
@@ -76,6 +89,7 @@ public class CommandApplyAttack extends Command {
             int dano = calcularDañoContraPeleador(objetivo);
             dañosPorLuchador[i] = dano;
             totalAttacks++;
+
             if (dano >= MIN_SUCCESS_DAMAGE) {
                 objetivo.recibirGolpe(dano);
                 succesfullattacks++;

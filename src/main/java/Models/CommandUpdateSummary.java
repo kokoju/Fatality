@@ -45,6 +45,18 @@ public class CommandUpdateSummary extends Command {
         if (attackerName == null || attackerName.isEmpty())
             return;
         server.aplicarResumenAtaque(attackerName, totalAttacks, successfulAttacks, failedAttacks);
+
+        // Actualizar el último enemigo atacado del atacante
+        ServerThread atacante = server.obtenerJugador(attackerName);
+        if (atacante != null && targetName != null && !targetName.isEmpty()) {
+            atacante.ultimoEnemigoAtacado = targetName;
+        }
+
+        // Reenviar este comando al atacante para que actualice su panel
+        server.enviarComandoAJugador(attackerName, this);
+
+        // Enviar stats actualizadas al atacante (incluyendo stats del enemigo)
+        server.enviarStatsAJugador(attackerName, targetName);
     }
 
     @Override

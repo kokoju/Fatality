@@ -104,6 +104,7 @@ public class CommandAttack extends Command {
 
         try {
             cliente.objectSender.writeObject(applyAttack);
+            cliente.setUltimoEnemigoAtacado(targetName); // Guardar último enemigo atacado
             cliente.getRefFrame().writeMessage("Ataque enviado a '" + targetName + "' usando '" + weaponName + "'");
             // El panel de ataque realizado se actualizará cuando llegue la confirmación del
             // servidor

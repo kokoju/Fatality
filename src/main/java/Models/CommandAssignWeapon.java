@@ -61,17 +61,20 @@ public class CommandAssignWeapon extends Command {
             return;
         }
         /*
-        Arma arma = GlobalArmory.buildWeapon(weaponName);
-        if (arma == null) {
-            client.getRefFrame().writeMessage("El arma '" + weaponName + "' no existe en el catálogo global");
-            return;
-        }
-        boolean asignada = peleador.asignarArma(arma);
-        if (!asignada) {
-            client.getRefFrame().writeMessage("No se pudo asignar el arma (ya existe o no hay espacio disponible)");
-            return;
-        }
-        */
+         * Arma arma = GlobalArmory.buildWeapon(weaponName);
+         * if (arma == null) {
+         * client.getRefFrame().writeMessage("El arma '" + weaponName +
+         * "' no existe en el catálogo global");
+         * return;
+         * }
+         * boolean asignada = peleador.asignarArma(arma);
+         * if (!asignada) {
+         * client.getRefFrame().
+         * writeMessage("No se pudo asignar el arma (ya existe o no hay espacio disponible)"
+         * );
+         * return;
+         * }
+         */
 
         client.getRefFrame().writeMessage(
                 "Arma '" + weaponName + "' asignada a '" + fighterName + "'");

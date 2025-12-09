@@ -24,74 +24,77 @@ import java.net.Socket;
 public class ServerThread extends Thread {
     private Server server;
     private Socket socket;
-    //Streams para leer y escribir objetos
+    // Streams para leer y escribir objetos
     public ObjectInputStream objectListener;
     public ObjectOutputStream objectSender;
     public String name;
-    
+
     public boolean isActive = false;
-        
+
     public boolean isRunning = true;
-    
+
     public boolean isTurn = false;
-    
+
     public boolean isReady = false;
-    
-    
-    
+
+    // Último enemigo que este jugador atacó
+    public String ultimoEnemigoAtacado = null;
 
     public ServerThread(Server server, Socket socket) {
         try {
-        this.server = server;
-        this.socket = socket;
-        objectSender =  new ObjectOutputStream (socket.getOutputStream());
-        objectSender.flush();
-        objectListener =  new ObjectInputStream (socket.getInputStream());
+            this.server = server;
+            this.socket = socket;
+            objectSender = new ObjectOutputStream(socket.getOutputStream());
+            objectSender.flush();
+            objectListener = new ObjectInputStream(socket.getInputStream());
         } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        
+
     }
-    
-    public void run (){
+
+    public void run() {
         Command comando;
-        while (isRunning){
+        while (isRunning) {
             try {
-                comando = (Command)objectListener.readObject();
+                comando = (Command) objectListener.readObject();
                 server.getRefFrame().writeMessage("ThreadServer recibió: " + comando);
                 comando.processForServer(this);
-                
-                //Si el comando consume el turno y no es el turno del cliente
-                if(comando.isConsumesTurn() && !this.isTurn) {   
-                    String [] args = new String[]{"RESULT","No es su turno para jugar"};
+
+                // Si el comando consume el turno y no es el turno del cliente
+                if (comando.isConsumesTurn() && !this.isTurn) {
+                    String[] args = new String[] { "RESULT", "No es su turno para jugar" };
                     this.objectSender.writeObject(CommandFactory.getCommand(args));
-                   
-                //Si el jugador esta vivo
+
+                    // Si el jugador esta vivo
                 } else if (isActive) {
                     server.executeCommand(comando, this);
+                    // Si el comando consume turno, avanzar al siguiente turno
+                    if (comando.isConsumesTurn() && this.isTurn) {
+                        server.nextTurn();
+                    }
                 } else if (this.isTurn)
                     server.nextTurn();
-                        
-                
+
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             } catch (ClassNotFoundException ex) {
                 System.out.println(ex.getMessage());
-            }  
-        } 
+            }
+        }
     }
 
-    public void showAllClients (){
+    public void showAllClients() {
         this.server.showAllNames();
     }
 
     public void setIsTurn(boolean isTurn) {
         this.isTurn = isTurn;
     }
-    
-    public void setIsActive(boolean isActive){
+
+    public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
 

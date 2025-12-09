@@ -21,6 +21,7 @@ public enum CommandType {
     CREATEFIGHTER (3),
     ASSIGNWEAPON (3),
     UPDATESUMMARY (4),
+    UPDATESTATS (4), // UPDATESTATS ranking ownStats enemyStats
     SKIP (1),
     NEXT (1),
     READY (1),   //ready  -> para iniciar juego

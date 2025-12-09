@@ -25,6 +25,8 @@ public class Client {
     
     private Jugador jugador;
     
+    private String ultimoEnemigoAtacado;
+    
     public String name;
 
     public Client(FrameClient refFrame, String name) {
@@ -69,6 +71,14 @@ public class Client {
 
     public Jugador getJugador() {
         return jugador;
+    }
+    
+    public String getUltimoEnemigoAtacado() {
+        return ultimoEnemigoAtacado;
+    }
+    
+    public void setUltimoEnemigoAtacado(String enemigo) {
+        this.ultimoEnemigoAtacado = enemigo;
     }
     
 

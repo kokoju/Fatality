@@ -113,7 +113,7 @@ public class FrameClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -179,7 +179,7 @@ public class FrameClient extends javax.swing.JFrame {
         txaStats.setFocusable(false);
         jScrollPane3.setViewportView(txaStats);
 
-        pnlAtaqueRecibido.setBackground(new java.awt.Color(51, 51, 51));
+        pnlAtaqueRecibido.setBackground(new java.awt.Color(102, 102, 102));
 
         InformacionAtaqueRecibido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         InformacionAtaqueRecibido.setText("Último ataque recibido");
@@ -187,30 +187,28 @@ public class FrameClient extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlAtaqueRecibidoLayout = new javax.swing.GroupLayout(pnlAtaqueRecibido);
         pnlAtaqueRecibido.setLayout(pnlAtaqueRecibidoLayout);
         pnlAtaqueRecibidoLayout.setHorizontalGroup(
-                pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(InformacionAtaqueRecibido)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 166,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap()));
+            pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(InformacionAtaqueRecibido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
+        );
         pnlAtaqueRecibidoLayout.setVerticalGroup(
-                pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
-                                .addGroup(pnlAtaqueRecibidoLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(InformacionAtaqueRecibido))
-                                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
-                                                .addGap(20, 20, 20)
-                                                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 233,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(16, Short.MAX_VALUE)));
+            pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                .addGroup(pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(InformacionAtaqueRecibido))
+                    .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
 
-        pnlAtaqueEnviado.setBackground(new java.awt.Color(51, 51, 51));
+        pnlAtaqueEnviado.setBackground(new java.awt.Color(102, 102, 102));
 
         InformacionAtaqueRealizado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         InformacionAtaqueRealizado.setText("Último ataque realizado");
@@ -218,29 +216,25 @@ public class FrameClient extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlAtaqueEnviadoLayout = new javax.swing.GroupLayout(pnlAtaqueEnviado);
         pnlAtaqueEnviado.setLayout(pnlAtaqueEnviadoLayout);
         pnlAtaqueEnviadoLayout.setHorizontalGroup(
-                pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
-                                        .addComponent(InformacionAtaqueRealizado)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132,
-                                                Short.MAX_VALUE)
-                                        .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 160,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap()));
+            pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAtaqueEnviadoLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(InformacionAtaqueRealizado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
         pnlAtaqueEnviadoLayout.setVerticalGroup(
-                pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                .addGroup(pnlAtaqueEnviadoLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(InformacionAtaqueRealizado))
-                                        .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
-                                                .addGap(20, 20, 20)
-                                                .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 230,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(25, Short.MAX_VALUE)));
+            pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(InformacionAtaqueRealizado)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAtaqueEnviadoLayout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
 
         pnlMenu.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -299,107 +293,75 @@ public class FrameClient extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
-                pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(YOURTEAM)
-                                        .addComponent(nombreLuchador)
-                                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                                .addGroup(pnlMenuLayout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(Luchador1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(arma3)
-                                                        .addComponent(arma4)
-                                                        .addComponent(arma2)
-                                                        .addComponent(arma1)
-                                                        .addComponent(arma5))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(pnlMenuLayout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(stats1, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                                                .addGroup(pnlMenuLayout.createParallelGroup(
-                                                                        javax.swing.GroupLayout.Alignment.LEADING,
-                                                                        false)
-                                                                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                                                                .addComponent(Luchador2,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        143,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addPreferredGap(
-                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addComponent(Luchador3,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        143,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addPreferredGap(
-                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addComponent(Luchador4,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        143,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                        .addComponent(stats2,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                        .addComponent(stats3,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                        .addComponent(stats4,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                        .addComponent(stats5,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE))
-                                                                .addGap(0, 0, Short.MAX_VALUE)))))
-                                .addContainerGap()));
+            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(YOURTEAM)
+                    .addComponent(nombreLuchador)
+                    .addGroup(pnlMenuLayout.createSequentialGroup()
+                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Luchador1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(arma3)
+                            .addComponent(arma4)
+                            .addComponent(arma2)
+                            .addComponent(arma1)
+                            .addComponent(arma5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(stats1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlMenuLayout.createSequentialGroup()
+                                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(pnlMenuLayout.createSequentialGroup()
+                                        .addComponent(Luchador2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Luchador3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Luchador4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(stats2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(stats3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(stats4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(stats5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
+        );
         pnlMenuLayout.setVerticalGroup(
-                pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(YOURTEAM)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlMenuLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(Luchador4, javax.swing.GroupLayout.DEFAULT_SIZE, 245,
-                                                Short.MAX_VALUE)
-                                        .addComponent(Luchador3, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(Luchador2, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(Luchador1, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                                .addComponent(nombreLuchador)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(arma1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(arma2)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(arma3)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(arma4)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(arma5))
-                                        .addGroup(pnlMenuLayout.createSequentialGroup()
-                                                .addComponent(stats1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(stats2)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(stats3)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(stats4)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(stats5)))
-                                .addContainerGap(14, Short.MAX_VALUE)));
+            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(YOURTEAM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Luchador4, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                    .addComponent(Luchador3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Luchador2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Luchador1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlMenuLayout.createSequentialGroup()
+                        .addComponent(nombreLuchador)
+                        .addGap(18, 18, 18)
+                        .addComponent(arma1)
+                        .addGap(18, 18, 18)
+                        .addComponent(arma2)
+                        .addGap(18, 18, 18)
+                        .addComponent(arma3)
+                        .addGap(18, 18, 18)
+                        .addComponent(arma4)
+                        .addGap(18, 18, 18)
+                        .addComponent(arma5))
+                    .addGroup(pnlMenuLayout.createSequentialGroup()
+                        .addComponent(stats1)
+                        .addGap(18, 18, 18)
+                        .addComponent(stats2)
+                        .addGap(18, 18, 18)
+                        .addComponent(stats3)
+                        .addGap(18, 18, 18)
+                        .addComponent(stats4)
+                        .addGap(18, 18, 18)
+                        .addComponent(stats5)))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
 
         btnSend.setBackground(new java.awt.Color(0, 204, 0));
         btnSend.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
@@ -417,95 +379,56 @@ public class FrameClient extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jScrollPane2,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 200,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jScrollPane1,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 200,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jScrollPane3,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 200,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
-                                                                false)
-                                                        .addComponent(pnlAtaqueRecibido,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(pnlAtaqueEnviado,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                        .addComponent(txfInput))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 469,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap()));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pnlAtaqueRecibido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pnlAtaqueEnviado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(txfInput))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(7, 7, 7)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
-                                                .createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(pnlMenu,
-                                                                javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
-                                                                .createSequentialGroup()
-                                                                .addComponent(pnlAtaqueRecibido,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(pnlAtaqueEnviado,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(12, 12, 12)))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11,
-                                        Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE, 93,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(39, 39, 39)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pnlAtaqueRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlAtaqueEnviado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -663,7 +586,12 @@ public class FrameClient extends javax.swing.JFrame {
         String nombreFormateado = formatearNombreLuchador(p.getNombre());
         int vidaPorcentaje = p.getVida();
         String colorTipo = getColorTipo(p.getTipo());
-        String tipoStr = p.getTipo() != null ? p.getTipo().toString() : "";
+        String tipoStr;
+        if (p.getTipo() != null) {
+            tipoStr = p.getTipo().toString();
+        } else {
+            tipoStr = "";
+        }
         nombreLuchador.setText("<html>" + nombreFormateado +
                 " <font color='" + colorTipo + "'>[" + tipoStr + "]</font>" +
                 " (" + vidaPorcentaje + "%)</html>");
@@ -909,7 +837,12 @@ public class FrameClient extends javax.swing.JFrame {
         // también mostrar el nombre formateado con vida
         Peleador p = arr[index];
         String nombreFormateado = formatearNombreLuchador(fighterName);
-        int vidaPorcentaje = (p != null) ? p.getVida() : 100;
+        int vidaPorcentaje;
+        if (p != null) {
+            vidaPorcentaje = p.getVida();
+        } else {
+            vidaPorcentaje = 100;
+        }
         nombreLuchador.setText(nombreFormateado + " (" + vidaPorcentaje + "%)");
 
         // Actualizar la vista de armas seleccionando automáticamente este luchador
@@ -994,10 +927,20 @@ public class FrameClient extends javax.swing.JFrame {
                 if (peleadores[i] != null) {
                     String nombreFormateado = formatearNombreLuchador(peleadores[i].getNombre());
                     String colorTipo = getColorTipo(peleadores[i].getTipo());
-                    String tipoStr = peleadores[i].getTipo() != null ? peleadores[i].getTipo().toString() : "";
+                    String tipoStr;
+                    if (peleadores[i].getTipo() != null) {
+                        tipoStr = peleadores[i].getTipo().toString();
+                    } else {
+                        tipoStr = "";
+                    }
                     int daño = dañosPorLuchador[i];
                     dañoTotal += daño;
-                    String estado = daño >= 60 ? " <b>¡Golpe!</b>" : " (Falló)";
+                    String estado;
+                    if (daño >= 60) {
+                        estado = " <b>¡Golpe!</b>";
+                    } else {
+                        estado = " (Falló)";
+                    }
                     sb.append(nombreFormateado);
                     sb.append(" <font color='").append(colorTipo).append("'>[").append(tipoStr).append("]</font>");
                     sb.append(" recibió <b>").append(daño).append("</b>").append(estado);
