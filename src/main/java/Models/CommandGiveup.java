@@ -5,7 +5,10 @@
 package Models;
 
 import Client.Client;
+import Server.GameVictoryManager;
+import Server.Server;
 import Server.ServerThread;
+import java.io.IOException;
 
 /**
  *
@@ -14,20 +17,38 @@ import Server.ServerThread;
 public class CommandGiveup extends Command {
 
     public CommandGiveup(String[] args) {
-        super(CommandType.PRIVATE_MESSAGE, args);
+        super(CommandType.GIVEUP, args);
         this.consumesTurn = false;
-        this.ownCommand = true;
-
+        this.ownCommand = false;
+        this.setIsBroadcast(false);
     }
 
     @Override
     public void processForServer(ServerThread serverThread) {
-        this.setIsBroadcast(true);
+        this.setIsBroadcast(false);
+        if (serverThread == null)
+            return;
+
+        Server server = serverThread.getServer();
+        String surrenderName = serverThread.name;
+        boolean teniaTurno = serverThread.isTurn;
         serverThread.isActive = false;
 
-        // Verificar si hay un ganador después de marcar como inactivo
+        if (server != null && surrenderName != null) {
+            server.incrementarStatJugador(surrenderName, "GIVEUP");
+            server.getRefFrame().writeMessage("Jugador " + surrenderName + " se rindió.");
+            serverThread.setIsTurn(false);
+
+            int activosRestantes = server.contarJugadoresActivos();
+            if (teniaTurno && activosRestantes > 1) {
+                server.nextTurn();
+            }
+        }
+
+        notificarJugador(serverThread);
+
         try {
-            Server.GameVictoryManager.checkVictory(serverThread.getServer());
+            GameVictoryManager.checkVictory(server);
         } catch (Exception ignored) {
         }
     }
@@ -35,5 +56,16 @@ public class CommandGiveup extends Command {
     @Override
     public String toString() {
         return "El jugador ha decidido rendirse";
+    }
+
+    private void notificarJugador(ServerThread serverThread) {
+        if (serverThread == null || serverThread.objectSender == null || serverThread.name == null)
+            return;
+        try {
+            Command resultado = CommandFactory.getCommand(
+                    new String[] { "RESULT", serverThread.name, "Te has rendido. Espera el resultado final." });
+            serverThread.objectSender.writeObject(resultado);
+        } catch (IOException ignored) {
+        }
     }
 }

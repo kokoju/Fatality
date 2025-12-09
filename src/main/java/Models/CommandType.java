@@ -16,12 +16,16 @@ public enum CommandType {
     MESSAGE (2), //message hola a todos
     PRIVATE_MESSAGE(3), //private Andres hola andres
     GIVEUP (1), //giveup
+    DRAW (1), //draw -> salida mutua
     NAME (2),
     NAME_HANDSHAKE (3),
     CREATEFIGHTER (3),
     ASSIGNWEAPON (3),
+    SELECTPLAYER (2),
     UPDATESUMMARY (4),
     UPDATESTATS (4), // UPDATESTATS ranking ownStats enemyStats
+    COMODINSTATUS (4), // COMODINSTATUS <Jugador> <true/false> <mensaje>
+    RELOAD (1),
     SKIP (1),
     NEXT (1),
     READY (1),   //ready  -> para iniciar juego

@@ -596,7 +596,16 @@ public class FrameClient extends javax.swing.JFrame {
                 " <font color='" + colorTipo + "'>[" + tipoStr + "]</font>" +
                 " (" + vidaPorcentaje + "%)</html>");
         Arma[] armas = p.getArregloArmas();
-        if (armas == null || armas.length == 0) {
+        boolean tieneAlMenosUnArma = false;
+        if (armas != null) {
+            for (Arma arma : armas) {
+                if (arma != null) {
+                    tieneAlMenosUnArma = true;
+                    break;
+                }
+            }
+        }
+        if (!tieneAlMenosUnArma) {
             arma1.setText("(sin armas)");
             arma2.setText("");
             arma3.setText("");
@@ -642,6 +651,33 @@ public class FrameClient extends javax.swing.JFrame {
             } else {
                 arma5.setText("");
                 stats5.setText("");
+            }
+        }
+    }
+
+    /**
+     * Vuelve a renderizar el panel de detalle para el peleador indicado.
+     */
+    public void refrescarPanelPeleador(String fighterName) {
+        if (fighterName == null || fighterName.trim().isEmpty())
+            return;
+        if (client == null)
+            return;
+        Jugador jugador = client.getJugador();
+        if (jugador == null)
+            return;
+        Peleador[] peleadores = jugador.getPeleadores();
+        if (peleadores == null)
+            return;
+        String buscado = fighterName.trim().toUpperCase();
+        for (int i = 0; i < peleadores.length; i++) {
+            Peleador peleador = peleadores[i];
+            if (peleador == null)
+                continue;
+            String nombreActual = peleador.getNombre();
+            if (nombreActual != null && nombreActual.trim().toUpperCase().equals(buscado)) {
+                alSeleccionarLuchador(i);
+                return;
             }
         }
     }
@@ -934,7 +970,9 @@ public class FrameClient extends javax.swing.JFrame {
                         tipoStr = "";
                     }
                     int daño = dañosPorLuchador[i];
-                    dañoTotal += daño;
+                    if (daño >= 60) {
+                        dañoTotal += daño;
+                    }
                     String estado;
                     if (daño >= 60) {
                         estado = " <b>¡Golpe!</b>";

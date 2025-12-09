@@ -39,10 +39,37 @@ public class CommandResult extends Command {
         else
             msg = params[1];
         client.getRefFrame().writeMessage(msg);
-        // Notificar posible resultado (victoria / derrota)
-        try {
-            //Cliente.OutcomeNotifier.handleResultMessage(client, msg);
-        } catch (Exception ignored) {
+
+        String mensajeNormalizado = msg == null ? "" : msg.trim();
+        if (mensajeNormalizado.equalsIgnoreCase("GANASTE")) {
+            mostrarDialogoFinPartida(client, "¡Has ganado la partida!", "Victoria");
+        } else if (mensajeNormalizado.equalsIgnoreCase("La partida terminó en empate mutuo.")) {
+            mostrarDialogoFinPartida(client, mensajeNormalizado, "Empate");
         }
+    }
+
+    //Si es el ultimo con vida o se acuerda un empate mutuo, se muestra un dialogo y se cierra el cliente y el programa
+    private void mostrarDialogoFinPartida(Client client, String mensaje, String titulo) {
+        if (client == null || client.getRefFrame() == null)
+            return;
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            javax.swing.JOptionPane.showMessageDialog(
+                    client.getRefFrame(),
+                    mensaje,
+                    titulo,
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            try {
+                if (client.objectSender != null)
+                    client.objectSender.close();
+                if (client.objectListener != null)
+                    client.objectListener.close();
+            } catch (Exception ignored) {
+            }
+            javax.swing.JFrame frame = client.getRefFrame();
+            if (frame != null) {
+                frame.dispose();
+            }
+            System.exit(0);
+        });
     }
 }

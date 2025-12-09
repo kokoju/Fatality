@@ -15,6 +15,12 @@ import Server.ServerThread;
  */
 public class CommandAssignWeapon extends Command {
 
+    private static final String[] ARMAS_DISPONIBLES = {
+            "Espada", "Arco", "Hacha", "Lanza", "Martillo",
+            "Daga", "Escudo", "Ballesta", "Katana", "Maza",
+            "Florete", "Guadaña", "Tridente", "Shuriken", "Nunchaku"
+    };
+
     public CommandAssignWeapon(String[] args) {
         super(CommandType.ASSIGNWEAPON, args);
         this.consumesTurn = false;
@@ -60,23 +66,43 @@ public class CommandAssignWeapon extends Command {
             client.getRefFrame().writeMessage("No tienes un peleador llamado '" + fighterName + "'");
             return;
         }
-        /*
-         * Arma arma = GlobalArmory.buildWeapon(weaponName);
-         * if (arma == null) {
-         * client.getRefFrame().writeMessage("El arma '" + weaponName +
-         * "' no existe en el catálogo global");
-         * return;
-         * }
-         * boolean asignada = peleador.asignarArma(arma);
-         * if (!asignada) {
-         * client.getRefFrame().
-         * writeMessage("No se pudo asignar el arma (ya existe o no hay espacio disponible)"
-         * );
-         * return;
-         * }
-         */
+
+        String nombreOficialArma = obtenerNombreOficialArma(weaponName);
+        if (nombreOficialArma == null) {
+            client.getRefFrame().writeMessage(
+                    "Arma inválida. Usa una de las siguientes: " + String.join(", ", ARMAS_DISPONIBLES));
+            return;
+        }
+
+        if (peleador.tieneArma(nombreOficialArma)) {
+            client.getRefFrame().writeMessage("'" + fighterName + "' ya tiene el arma '" + nombreOficialArma + "'");
+            return;
+        }
+
+        boolean asignada = peleador.asignarArma(new Arma(nombreOficialArma));
+        if (!asignada) {
+            client.getRefFrame().writeMessage(
+                    "No se pudo asignar el arma. Verifica que el peleador tenga espacio disponible (máximo 5).");
+            return;
+        }
 
         client.getRefFrame().writeMessage(
-                "Arma '" + weaponName + "' asignada a '" + fighterName + "'");
+                "Arma '" + nombreOficialArma + "' asignada a '" + fighterName + "'");
+
+        if (client.getRefFrame() != null) {
+            client.getRefFrame().refrescarPanelPeleador(peleador.getNombre());
+        }
+    }
+
+    private String obtenerNombreOficialArma(String nombreIngresado) {
+        if (nombreIngresado == null)
+            return null;
+        String buscado = nombreIngresado.trim().toLowerCase();
+        for (String nombre : ARMAS_DISPONIBLES) {
+            if (nombre != null && nombre.trim().toLowerCase().equals(buscado)) {
+                return nombre;
+            }
+        }
+        return null;
     }
 }

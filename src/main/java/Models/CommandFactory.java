@@ -27,6 +27,8 @@ public class CommandFactory {
                 return new CommandPrivateMessage(args);
             case "GIVEUP":
                 return new CommandGiveup(args);
+            case "DRAW":
+                return new CommandMutualDraw(args);
             case "NAME":
                 return new CommandName(args);
             case "NAME_HANDSHAKE":
@@ -35,6 +37,12 @@ public class CommandFactory {
                 return new CommandCreateFighter(args);
             case "ASSIGNWEAPON":
                 return new CommandAssignWeapon(args);
+            case "RELOAD":
+                return new CommandReload(args);
+            case "COMODINSTATUS":
+                return new CommandComodinStatus(args);
+            case "SELECTPLAYER":
+                return new CommandSelectPlayer(args);
             case "LOG":
                 return new CommandLog(args);
             case "READY":

@@ -43,18 +43,23 @@ public final class GameVictoryManager {
         if (posibleGanador != null) {
             for (ServerThread ts : server.getConnectedClients()) {
                 try {
-                    String msg;
-                    if (ts == posibleGanador) {
-                        msg = "GANASTE";
-                    } else {
-                        msg = "PERDISTE";
+                    if (ts.name != null) {
+                        if (ts == posibleGanador) {
+                            server.incrementarStatJugador(ts.name, "WINS");
+                        } else {
+                            server.incrementarStatJugador(ts.name, "LOSSES");
+                        }
                     }
+
+                    String msg = (ts == posibleGanador) ? "GANASTE" : "PERDISTE";
                     String[] args = new String[] { "RESULT", ts.name, msg };
                     Command comando = CommandFactory.getCommand(args);
                     ts.objectSender.writeObject(comando);
                 } catch (IOException ignored) {
                 }
             }
+
+            server.finalizarPartida();
         }
     }
 }

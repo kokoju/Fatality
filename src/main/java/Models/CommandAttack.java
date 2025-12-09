@@ -14,13 +14,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Maneja comandos Attack <JugadorObjetivo> <PeleadorPropio> <Arma>.
+ * Maneja comandos Attack <JugadorObjetivo> <Peleador> <Arma> y la variante con
+ * comodín: Attack <JugadorObjetivo> Comodin <Peleador1> <Arma1> <Peleador2>
+ * <Arma2>.
  */
 public class CommandAttack extends Command {
 
     public CommandAttack(String[] args) {
         super(CommandType.ATTACK, args);
-        this.consumesTurn = true;
+        this.consumesTurn = false;
         this.ownCommand = false; // Se envía al servidor para validar turno primero
         this.setIsBroadcast(false);
     }
@@ -48,16 +50,48 @@ public class CommandAttack extends Command {
         }
 
         String targetName = params[1].trim();
-        String fighterName = params[2].trim();
-        String weaponName = params[3].trim();
+        boolean comodinSolicitado = params.length >= 7 && "COMODIN".equalsIgnoreCase(params[2]);
+
+        if (comodinSolicitado && params.length < 7) {
+            cliente.getRefFrame().writeMessage(
+                    "Uso: Attack <Jugador> Comodin <Peleador1> <Arma1> <Peleador2> <Arma2>");
+            return;
+        }
+
+        String fighterName;
+        String weaponName;
+        String segundoPeleador = null;
+        String segundaArma = null;
+
+        if (comodinSolicitado) {
+            fighterName = params[3].trim();
+            weaponName = params[4].trim();
+            segundoPeleador = params[5].trim();
+            segundaArma = params[6].trim();
+        } else {
+            fighterName = params[2].trim();
+            weaponName = params[3].trim();
+        }
 
         if (targetName.isEmpty() || fighterName.isEmpty() || weaponName.isEmpty()) {
             cliente.getRefFrame().writeMessage("Los parámetros Jugador, Peleador y Arma son obligatorios");
             return;
         }
 
+        if (comodinSolicitado && (segundoPeleador == null || segundaArma == null
+                || segundoPeleador.trim().isEmpty() || segundaArma.trim().isEmpty())) {
+            cliente.getRefFrame().writeMessage(
+                    "Debe indicar ambos peleadores y armas para usar el comodín");
+            return;
+        }
+
         if (cliente.name != null && cliente.name.equalsIgnoreCase(targetName)) {
             cliente.getRefFrame().writeMessage("No puedes atacarte a ti mismo");
+            return;
+        }
+
+        if (comodinSolicitado && !atacante.getTieneComodin()) {
+            cliente.getRefFrame().writeMessage("No tienes un comodín disponible en este momento");
             return;
         }
 
@@ -79,41 +113,95 @@ public class CommandAttack extends Command {
             return;
         }
 
-        arma.setFueUsada(true);
+        Peleador segundoPeleadorObj = null;
+        Arma armaSecundaria = null;
 
-        // Convertir array de daños a string para enviarlo
-        int[] daños = arma.getArregloGolpe();
-        StringBuilder dañosStr = new StringBuilder();
-        if (daños != null) {
-            for (int i = 0; i < daños.length; i++) {
-                if (i > 0)
-                    dañosStr.append(",");
-                dañosStr.append(daños[i]);
+        if (comodinSolicitado) {
+            segundoPeleadorObj = atacante.buscarPeleadorPorNombre(segundoPeleador);
+            if (segundoPeleadorObj == null) {
+                cliente.getRefFrame().writeMessage("No tienes un peleador llamado '" + segundoPeleador + "'");
+                return;
+            }
+
+            armaSecundaria = segundoPeleadorObj.buscarArmaPorNombre(segundaArma);
+            if (armaSecundaria == null) {
+                cliente.getRefFrame().writeMessage(
+                        "El peleador '" + segundoPeleador + "' no tiene un arma '" + segundaArma + "'");
+                return;
+            }
+
+            if (armaSecundaria.getFueUsada()) {
+                cliente.getRefFrame()
+                        .writeMessage("El arma '" + segundaArma + "' ya fue usada. Selecciona otra arma.");
+                return;
             }
         }
 
-        String[] newArgs = new String[] {
-                "APPLYATTACK",
-                targetName, // Jugador objetivo
-                cliente.name, // Nombre del atacante
-                fighterName, // Nombre del peleador
-                weaponName, // Nombre del arma
-                dañosStr.toString() // Daños del arma (formato: "d0,d1,d2,...")
-        };
-        Command applyAttack = new CommandApplyAttack(newArgs);
+        arma.setFueUsada(true);
+        if (armaSecundaria != null) {
+            armaSecundaria.setFueUsada(true);
+        }
+
+        boolean comodinConsumido = false;
+        if (comodinSolicitado) {
+            atacante.setTieneComodin(false);
+            comodinConsumido = true;
+        }
+
+        Command primerAtaque = crearComandoApply(targetName, cliente.name, fighterName, arma);
+        Command segundoAtaque = null;
+        if (comodinSolicitado && segundoPeleadorObj != null && armaSecundaria != null) {
+            segundoAtaque = crearComandoApply(targetName, cliente.name, segundoPeleador, armaSecundaria);
+        }
 
         try {
-            cliente.objectSender.writeObject(applyAttack);
-            cliente.setUltimoEnemigoAtacado(targetName); // Guardar último enemigo atacado
-            cliente.getRefFrame().writeMessage("Ataque enviado a '" + targetName + "' usando '" + weaponName + "'");
-            // El panel de ataque realizado se actualizará cuando llegue la confirmación del
-            // servidor
+            cliente.objectSender.writeObject(primerAtaque);
+            cliente.setUltimoEnemigoAtacado(targetName);
+            cliente.getRefFrame().writeMessage(
+                    "Ataque enviado a '" + targetName + "' usando '" + weaponName + "'");
+
+            if (segundoAtaque != null) {
+                cliente.objectSender.writeObject(segundoAtaque);
+                cliente.getRefFrame().writeMessage(
+                        "Segundo ataque del comodín enviado a '" + targetName + "' usando '" + segundaArma + "'");
+            }
         } catch (IOException ex) {
-            // Si falla el envío, revertir el uso del arma
             arma.setFueUsada(false);
+            if (armaSecundaria != null) {
+                armaSecundaria.setFueUsada(false);
+            }
+            if (comodinConsumido) {
+                atacante.setTieneComodin(true);
+            }
             Logger.getLogger(CommandAttack.class.getName()).log(Level.SEVERE, null, ex);
             cliente.getRefFrame().writeMessage("No se pudo enviar el ataque: " + ex.getMessage());
         }
     }
 
+    private Command crearComandoApply(String targetName, String attackerName, String fighter, Arma arma) {
+        String weaponName = arma != null ? arma.getNombre() : "";
+        String dañosSerializados = arma != null ? serializarDaños(arma.getArregloGolpe()) : "";
+
+        String[] args = new String[] {
+                "APPLYATTACK",
+                targetName,
+                attackerName,
+                fighter,
+                weaponName,
+                dañosSerializados
+        };
+        return new CommandApplyAttack(args);
+    }
+
+    private String serializarDaños(int[] daños) {
+        if (daños == null || daños.length == 0)
+            return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < daños.length; i++) {
+            if (i > 0)
+                sb.append(",");
+            sb.append(daños[i]);
+        }
+        return sb.toString();
+    }
 }

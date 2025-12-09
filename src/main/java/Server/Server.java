@@ -9,6 +9,8 @@ import Models.Command;
 import Models.CommandFactory;
 import Models.CommandType;
 import Models.CommandApplyAttack;
+import Models.CommandComodinStatus;
+import Models.CommandSelectPlayer;
 import Models.CommandUpdateStats;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,13 +26,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,9 +56,14 @@ public class Server {
     private ServerFrame refFrame;
     private ConnectionThread connectionsThread;
     private File archivoEstadisticas = new File("ranking.txt");
-    private LinkedHashMap<String, Stats> hashMapEstadisticas; // Un LinkedHashMap funciona como un HashMap (llave,
-                                                              // valor), pero con la estructura de una lista enlazada,
-                                                              // dónde los elementos se siguen entre si
+    private LinkedHashMap<String, Stats> hashMapEstadisticas;  // Un LinkedHashMap funciona como un HashMap (llave, valor), pero con la estructura de una lista enlazada, dónde los elementos se siguen entre si
+    private static final long COMODIN_INTERVAL_MS = 5 * 60 * 1000L;
+    private final Object comodinLock = new Object();
+    private Timer comodinTimer;
+    private String jugadorActualConComodin;
+    private final Random comodinRandom = new Random();
+    private final Set<String> solicitudesEmpate = Collections.synchronizedSet(new HashSet<>());
+    private String primerProponenteEmpate;
 
     // Juego iniciado?
     private boolean start = false;
@@ -60,11 +71,11 @@ public class Server {
     public Server(ServerFrame refFrame) {
         connectedClients = new LinkedList<ServerThread>();
         this.refFrame = refFrame;
-        this.iniciarStats(); // Se establece una función para recuperar las estadísticas de cada jugador
-                             // (almacenado en this.hashMapEstadisticas)
+        this.iniciarStats();  // Se establece una función para recuperar las estadísticas de cada jugador (almacenado en this.hashMapEstadisticas)
         this.init();
         this.connectionsThread = new ConnectionThread(this);
         this.connectionsThread.start();
+        this.initComodinScheduler();
 
     }
 
@@ -119,20 +130,204 @@ public class Server {
         }
     }
 
-    // Funciones en relación a la recuperación de datos, ver
-    // https://www.w3schools.com/java/java_hashmap.asp
+    // Inicia un temporizador que reparte el comodín cada 5 minutos solo una vez por instancia.
+    private void initComodinScheduler() {
+        if (this.comodinTimer != null)
+            return;
+        this.comodinTimer = new Timer("comodin-timer", true);
+        this.comodinTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                asignarComodinAleatorio();
+            }
+        }, COMODIN_INTERVAL_MS, COMODIN_INTERVAL_MS);
+    }
 
-    public void ordenarStats() { // Función encargada de ordenar las estadísticas en orden ascendente, en función
-                                 // del valor de WINS de un jugador
-        List<Map.Entry<String, Stats>> entryList = new ArrayList<>(this.hashMapEstadisticas.entrySet()); // Se
-                                                                                                         // transforman
-                                                                                                         // las entradas
-                                                                                                         // del HashMap
-                                                                                                         // en una
-                                                                                                         // lista;
-        // Aquí, estamos creando una lista que almacena <Map.Entry<String, Stats>>,
-        // reagrupando entonces todo el contenido del HashMap
+    // Selecciona un jugador activo al azar para asignarle el comodín.
+    private void asignarComodinAleatorio() {
+        List<ServerThread> candidatos;
+        synchronized (connectedClients) {
+            candidatos = connectedClients.stream()
+                    .filter(client -> client != null && client.isActive && client.name != null && !client.name.isEmpty())
+                    .collect(Collectors.toList());
+        }
 
+        if (candidatos.isEmpty()) {
+            actualizarTitularComodin(null);
+            return;
+        }
+
+        ServerThread elegido = candidatos.get(comodinRandom.nextInt(candidatos.size()));
+        if (elegido != null)
+            actualizarTitularComodin(elegido.name);
+    }
+
+    // Actualiza el registro del jugador que posee el comodín y notifica cambios.
+    private void actualizarTitularComodin(String nuevoTitular) {
+        String anterior;
+        synchronized (comodinLock) {
+            anterior = this.jugadorActualConComodin;
+            this.jugadorActualConComodin = nuevoTitular;
+        }
+
+        if (anterior != null && (nuevoTitular == null || !anterior.equalsIgnoreCase(nuevoTitular))) {
+            enviarEstadoComodin(anterior, false, "Has perdido el comodín. Espera el próximo sorteo.");
+        }
+
+        if (nuevoTitular != null && (anterior == null || !anterior.equalsIgnoreCase(nuevoTitular))) {
+            enviarEstadoComodin(nuevoTitular, true,
+                    "¡Has recibido el comodín! Usa 'Attack <Jugador> Comodin <Peleador1> <Arma1> <Peleador2> <Arma2>'.");
+            anunciarNuevoComodin(nuevoTitular);
+        }
+    }
+
+    // Envía al jugador objetivo la notificación privada sobre su estado del comodín.
+    private void enviarEstadoComodin(String jugador, boolean disponible, String mensaje) {
+        if (jugador == null)
+            return;
+        Command estado = new CommandComodinStatus(jugador, disponible, mensaje);
+        enviarComandoAJugador(jugador, estado);
+    }
+
+    // Anuncia por broadcast quién recibió el comodín recientemente.
+    private void anunciarNuevoComodin(String jugador) {
+        if (jugador == null)
+            return;
+        String mensaje = "Server: " + jugador + " recibió el comodín durante 5 minutos.";
+        this.refFrame.writeMessage(mensaje);
+        for (ServerThread client : connectedClients) {
+            if (client == null)
+                continue;
+            try {
+                Command aviso = CommandFactory.getCommand(new String[] { "RESULT", mensaje });
+                client.objectSender.writeObject(aviso);
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    // Marca el comodín como consumido por el jugador indicado y actualiza la interfaz.
+    public void registrarComodinUsadoPor(String jugador) {
+        if (jugador == null)
+            return;
+        boolean eraTitular = false;
+        synchronized (comodinLock) {
+            if (this.jugadorActualConComodin != null
+                    && this.jugadorActualConComodin.equalsIgnoreCase(jugador)) {
+                eraTitular = true;
+                this.jugadorActualConComodin = null;
+            }
+        }
+
+        if (eraTitular) {
+            enviarEstadoComodin(jugador, false, "Tu comodín ha sido consumido.");
+            this.refFrame.writeMessage("El jugador " + jugador + " consumió su comodín.");
+        }
+    }
+
+    public boolean yaPropusoEmpate(String jugador) {
+        if (jugador == null)
+            return false;
+        synchronized (solicitudesEmpate) {
+            return solicitudesEmpate.contains(jugador.toUpperCase());
+        }
+    }
+
+    public boolean registrarSolicitudEmpate(String jugador) {
+        if (jugador == null)
+            return false;
+        synchronized (solicitudesEmpate) {
+            if (solicitudesEmpate.isEmpty()) {
+                primerProponenteEmpate = jugador;
+            }
+            solicitudesEmpate.add(jugador.toUpperCase());
+            return solicitudesEmpate.size() >= 2;
+        }
+    }
+
+    public void notificarPropuestaEmpate(String proponente) {
+        if (proponente == null)
+            return;
+        String mensaje = "Server: " + proponente
+            + " propone terminar en empate. Escribe 'DRAW' para aceptar o 'DRAW REJECT' para rechazar.";
+        for (ServerThread client : connectedClients) {
+            if (client == null || client.name == null)
+                continue;
+            if (client.name.equalsIgnoreCase(proponente))
+                continue;
+            try {
+                Command aviso = CommandFactory.getCommand(new String[] { "RESULT", client.name, mensaje });
+                client.objectSender.writeObject(aviso);
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    public void resolverEmpateMutuo() {
+        this.refFrame.writeMessage("La partida terminó en empate mutuo.");
+        for (ServerThread client : connectedClients) {
+            if (client == null || client.name == null)
+                continue;
+            incrementarEmpateJugador(client.name);
+            client.isActive = false;
+            try {
+                Command aviso = CommandFactory
+                        .getCommand(new String[] { "RESULT", client.name, "La partida terminó en empate mutuo." });
+                client.objectSender.writeObject(aviso);
+            } catch (IOException ignored) {
+            }
+        }
+        finalizarPartida();
+    }
+
+    public void rechazarSolicitudEmpate(String jugador) {
+        ServerThread rechazador = obtenerJugador(jugador);
+        if (rechazador == null) {
+            return;
+        }
+
+        boolean habiaPropuesta;
+        synchronized (solicitudesEmpate) {
+            habiaPropuesta = !solicitudesEmpate.isEmpty();
+            solicitudesEmpate.clear();
+            primerProponenteEmpate = null;
+        }
+
+        if (!habiaPropuesta) {
+            enviarResultadoPrivado(rechazador, "No hay propuestas de empate activas para rechazar.");
+            return;
+        }
+
+        for (ServerThread client : connectedClients) {
+            if (client == null || client.name == null)
+                continue;
+            String mensaje;
+            if (client == rechazador) {
+                mensaje = "Has rechazado la propuesta de empate.";
+            } else {
+                mensaje = "El jugador " + jugador + " rechazó la propuesta de empate.";
+            }
+            try {
+                Command aviso = CommandFactory.getCommand(new String[] { "RESULT", client.name, mensaje });
+                client.objectSender.writeObject(aviso);
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    public void limpiarSolicitudesEmpate() {
+        synchronized (solicitudesEmpate) {
+            solicitudesEmpate.clear();
+        }
+        primerProponenteEmpate = null;
+    }
+    
+    // Funciones en relación a la recuperación de datos, ver https://www.w3schools.com/java/java_hashmap.asp
+
+    public void ordenarStats() {  // Función encargada de ordenar las estadísticas en orden ascendente, en función del valor de WINS de un jugador
+        List<Map.Entry<String, Stats>> entryList = new ArrayList<>(this.hashMapEstadisticas.entrySet());  // Se transforman las entradas del HashMap en una lista;
+        // Aquí, estamos creando una lista que almacena <Map.Entry<String, Stats>>, reagrupando entonces todo el contenido del HashMap
+        
         entryList.sort((entry1, entry2) -> // Ordenamos por WINS de forma ascendente
         Integer.compare(entry2.getValue().getHashMapStats().get("WINS"),
                 entry1.getValue().getHashMapStats().get("WINS"))); // Esta línea indica al sort como ordenar, en función
@@ -145,55 +340,48 @@ public class Server {
         // entonces el orden entre a y b da igual)
         // - POSITIVO si entry1 debe ir DESPUÉS que entry2 (si a = 15 y b = 10, 15 - 10
         // = 5, entonces a va después de b)
-
-        this.hashMapEstadisticas.clear(); // Se limpia el mapa para volver a llenarlo
-        for (Map.Entry<String, Stats> entry : entryList) { // Recorremos la lista ordenada, añadiendo los elementos
-                                                           // nuevamente en el HashMap
+        
+       this.hashMapEstadisticas.clear();  // Se limpia el mapa para volver a llenarlo
+        for (Map.Entry<String, Stats> entry : entryList) {  // Recorremos la lista ordenada, añadiendo los elementos nuevamente en el HashMap
             this.hashMapEstadisticas.put(entry.getKey(), entry.getValue());
         }
     }
 
-    public void iniciarStats() { // Función para leer estadísticas de un archivo
-        this.hashMapEstadisticas = new LinkedHashMap<>(); // Empezamos por un LinkedHashMap vacío
-        if (!archivoEstadisticas.exists()) { // Si no existe un archivo de estadísticas, se crea
-            try {
-                archivoEstadisticas.createNewFile(); // Creación del archivo
-                System.out.println("Archivo de estadísticas creado nuevo"); // Realmente estamos guardando un archivo
-                                                                            // vacío: si antes no existían las
-                                                                            // estadísticas, no hay información que
-                                                                            // retomar
-            } catch (IOException ex) {
-                this.refFrame.writeMessage("Error creando archivo: " + ex.getMessage());
-            }
+    
+    public void iniciarStats() {  // Función para leer estadísticas de un archivo
+    this.hashMapEstadisticas = new LinkedHashMap<>();  // Empezamos por un LinkedHashMap vacío
+    if (!archivoEstadisticas.exists()) {  // Si no existe un archivo de estadísticas, se crea
+        try {
+            archivoEstadisticas.createNewFile();  // Creación del archivo
+            System.out.println("Archivo de estadísticas creado nuevo");  // Realmente estamos guardando un archivo vacío: si antes no existían las estadísticas, no hay información que retomar
+        } catch (IOException ex) {
+            this.refFrame.writeMessage("Error creando archivo: " + ex.getMessage());
         }
-
-        try (FileReader reader = new FileReader(this.archivoEstadisticas)) { // Si ya había algo, lo sacamos
-            // Usamos GSON, una librería de Google para la lectura de JSON
-            Gson gson = new Gson();
-            Type type = new TypeToken<LinkedHashMap<String, Stats>>() {
-            }.getType(); // Declaramos el tipo de dato que buscamos leer
-            this.hashMapEstadisticas = gson.fromJson(reader, type); // Leemos en el archivo que ya abrímos con
-                                                                    // anterioridad, almacenando su contenido en el
-                                                                    // HashMap (es posible, considerando que nuestro
-                                                                    // type es el mismo que el del HashMap)
-
-            if (this.hashMapEstadisticas == null) { // Si el resultado que tenemos es null (inválido), no lo tomamos en
-                                                    // cuenta, retornando un HashMap vacío
-                this.hashMapEstadisticas = new LinkedHashMap<>();
-            }
-
-            System.out.println("Estadísticas cargadas: " + this.hashMapEstadisticas.size() + " jugadores"); // Mensaje
-                                                                                                            // para
-                                                                                                            // debbug
-
-        } catch (Exception e) { // Secuencia de error al leer estadísticas
-            System.out.println("Error leyendo estadísticas: " + e.getMessage());
-            this.hashMapEstadisticas = new LinkedHashMap<>(); // El arreglo estaría mal, entonces se retorna vacío
-        }
-        ordenarStats(); // Ordenamos las stats
-        // Prueba para verificar los datos leídos
-        this.hashMapEstadisticas.forEach((k, v) -> System.out.println(k + ": " + v.toString()));
     }
+
+    try (FileReader reader = new FileReader(this.archivoEstadisticas)) {  // Si ya había algo, lo sacamos
+        // Usamos GSON, una librería de Google para la lectura de JSON
+        Gson gson = new Gson();
+        Type type = new TypeToken<LinkedHashMap<String, Stats>>(){}.getType();  // Declaramos el tipo de dato que buscamos leer
+        this.hashMapEstadisticas = gson.fromJson(reader, type);  // Leemos en el archivo que ya abrímos con anterioridad, almacenando su contenido en el HashMap (es posible, considerando que nuestro type es el mismo que el del HashMap)
+        
+        if (this.hashMapEstadisticas == null) {  // Si el resultado que tenemos es null (inválido), no lo tomamos en cuenta, retornando un HashMap vacío
+            this.hashMapEstadisticas = new LinkedHashMap<>();
+        }
+        
+        System.out.println("Estadísticas cargadas: " + this.hashMapEstadisticas.size() + " jugadores");  // Mensaje para debbug
+        
+        
+    } catch (Exception e) {  // Secuencia de error al leer estadísticas
+        System.out.println("Error leyendo estadísticas: " + e.getMessage());
+        this.hashMapEstadisticas = new LinkedHashMap<>();  // El arreglo estaría mal, entonces se retorna vacío
+    }
+    ordenarStats();  // Ordenamos las stats
+    // Prueba para verificar los datos leídos 
+    this.hashMapEstadisticas.forEach((k, v) -> 
+        System.out.println(k + ": " + v.toString())
+    );
+}
 
     public String textoMostrarRanking() {
         StringBuilder texto = new StringBuilder();
@@ -238,25 +426,28 @@ public class Server {
 
         return texto.toString();
     }
-
-    public void crearNuevoJugador(String nombreJugador) { // Si entra un jugador que no forma parte de los rankings, se
-                                                          // añade
+    
+    public void crearNuevoJugador(String nombreJugador) {  // Si entra un jugador que no forma parte de los rankings, se añade
         this.hashMapEstadisticas.put(nombreJugador, new Stats());
-        actualizarStats(); // Hubo cambios, se actualiza en archivo
+        actualizarStats();  // Hubo cambios, se actualiza en archivo
     }
-
-    public void incrementarStatJugador(String nombreJugador, String statIncrementada) { // Se incrementa una estadística
-                                                                                        // deseada del jugador indicado
-        Stats statsJugador = this.hashMapEstadisticas.get(nombreJugador); // Se consigue el arreglo de estadísticas del
-                                                                          // jugador
-        statsJugador.incrementarStat(statIncrementada); // Se incrementa su valor
-        actualizarStats(); // Se actualiza el archivo
+    
+    public void incrementarStatJugador(String nombreJugador, String statIncrementada) {  // Se incrementa una estadística deseada del jugador indicado
+        if (nombreJugador == null || statIncrementada == null)
+            return;
+        Stats statsJugador = this.hashMapEstadisticas.get(nombreJugador);  // Se consigue el arreglo de estadísticas del jugador
+        if (statsJugador == null) {
+            statsJugador = new Stats();
+            this.hashMapEstadisticas.put(nombreJugador, statsJugador);
+        }
+        statsJugador.incrementarStat(statIncrementada);  // Se incrementa su valor
+        actualizarStats();  // Se actualiza el archivo
     }
 
     public void aplicarResumenAtaque(String nombreJugador,
-            int totalAtaques,
-            int exitosos,
-            int fallidos) {
+                                     int totalAtaques,
+                                     int exitosos,
+                                     int fallidos) {
         if (nombreJugador == null || nombreJugador.trim().isEmpty())
             return;
         Stats statsJugador = this.hashMapEstadisticas.get(nombreJugador);
@@ -270,25 +461,33 @@ public class Server {
         actualizarStats();
     }
 
-    public void actualizarStats() { // Función para guardar actualizaciones en el archivo (cada que hay un cambio):
-                                    // se usa la líbrería GSON
-        Gson gson = new Gson(); // Se crea un nuevo Objeto Gson
-        Type typeObject = new TypeToken<LinkedHashMap<String, Stats>>() {
-        }.getType(); // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
-        String gsonData = gson.toJson(this.hashMapEstadisticas, typeObject); // Serializa el diccionario
-                                                                             // this.hashMapEstadisticas a formato JSON,
-                                                                             // siguiendo el tipo indicado
+    public void incrementarEmpateJugador(String nombreJugador) {
+        if (nombreJugador == null || nombreJugador.trim().isEmpty())
+            return;
+        Stats statsJugador = this.hashMapEstadisticas.get(nombreJugador);
+        if (statsJugador == null) {
+            statsJugador = new Stats();
+            this.hashMapEstadisticas.put(nombreJugador, statsJugador);
+        }
+        LinkedHashMap<String, Integer> mapa = statsJugador.getHashMapStats();
+        if (!mapa.containsKey("DRAWS")) {
+            mapa.put("DRAWS", 0);
+        }
+        mapa.put("DRAWS", mapa.get("DRAWS") + 1);
+        actualizarStats();
+    }
 
-        try (FileWriter writer = new FileWriter(this.archivoEstadisticas, false)) { // Intentamos crear una escritor en
-                                                                                    // el archivo. El 'false' borra todo
-                                                                                    // el contenido que estaba
-                                                                                    // anteriormente
+    public void actualizarStats() {  // Función para guardar actualizaciones en el archivo (cada que hay un cambio): se usa la líbrería GSON
+        Gson gson = new Gson();  // Se crea un nuevo Objeto Gson
+        Type typeObject = new TypeToken<LinkedHashMap<String, Stats>>() {}.getType();  // Define el tipo para la conversión: HashMap<String, TipoEstadistica>
+        String gsonData = gson.toJson(this.hashMapEstadisticas, typeObject);  // Serializa el diccionario this.hashMapEstadisticas a formato JSON, siguiendo el tipo indicado
+        
+        try (FileWriter writer = new FileWriter(this.archivoEstadisticas, false)) {  // Intentamos crear una escritor en el archivo. El 'false' borra todo el contenido que estaba anteriormente
             writer.write(gsonData);
-            ordenarStats(); // Procedemos a ordenar las stats
+            ordenarStats();  // Procedemos a ordenar las stats
             actualizarDatosParaJugadores();
-        } catch (IOException e) { // Si hay una excepción al intentar escribir
-            System.out.println("No se puede escribir en el archivo"); // Si llega a existir un error al intentar
-                                                                      // escribir, se muestra en consola
+        } catch (IOException e) {  // Si hay una excepción al intentar escribir
+            System.out.println("No se puede escribir en el archivo");  // Si llega a existir un error al intentar escribir, se muestra en consola
         }
     }
 
@@ -305,9 +504,14 @@ public class Server {
                     ownStats = textoMostrarJugadorPropio(client.name);
                 }
 
-                // El enemyStats se actualizará cuando el cliente ataque a alguien
-                // Por ahora enviamos vacío, se llenará con CommandUpdateSummary
-                CommandUpdateStats statsCmd = new CommandUpdateStats(ranking, ownStats, "");
+                String enemyStats = "";
+                if (client.ultimoEnemigoAtacado != null &&
+                        !client.ultimoEnemigoAtacado.isEmpty() &&
+                        this.hashMapEstadisticas.containsKey(client.ultimoEnemigoAtacado)) {
+                    enemyStats = textoMostrarJugadorEnemigo(client.ultimoEnemigoAtacado);
+                }
+
+                CommandUpdateStats statsCmd = new CommandUpdateStats(ranking, ownStats, enemyStats);
                 client.objectSender.writeObject(statsCmd);
             } catch (IOException ex) {
                 System.out.println("Error enviando stats a " + client.name + ": " + ex.getMessage());
@@ -339,7 +543,36 @@ public class Server {
         enviarComandoAJugador(nombreJugador, statsCmd);
     }
 
+    private void manejarSeleccionJugador(ServerThread origin, CommandSelectPlayer comando) {
+        if (origin == null || comando == null)
+            return;
+        if (origin.name == null || origin.name.trim().isEmpty())
+            return;
+
+        String target = comando.getTargetPlayer();
+        if (target == null || target.trim().isEmpty()) {
+            enviarResultadoPrivado(origin, "Debe indicar el nombre del jugador a consultar.");
+            return;
+        }
+
+        String nombreExacto = buscarNombreEnEstadisticas(target);
+        if (nombreExacto == null) {
+            enviarResultadoPrivado(origin, "No se encontraron estadísticas para '" + target + "'.");
+            return;
+        }
+
+        origin.ultimoEnemigoAtacado = nombreExacto;
+        enviarStatsAJugador(origin.name, nombreExacto);
+    }
+
     public void executeCommand(Command comando, ServerThread origin) {
+
+        if (comando.getType() == CommandType.SELECTPLAYER) {
+            if (comando instanceof CommandSelectPlayer) {
+                manejarSeleccionJugador(origin, (CommandSelectPlayer) comando);
+            }
+            return;
+        }
 
         if (comando.getType() == CommandType.SKIP) {
             nextTurn();
@@ -356,13 +589,14 @@ public class Server {
         else if (comando.isOwnCommand()) {
             processPrivate(comando, origin);
         }
+            
 
-        // Si es uno que se refleja en cliente enemigo
-        else if (comando.getParameters().length > 1 && this.buscarJugador(comando.getParameters()[1])) {
+            // Si es uno que se refleja en cliente enemigo
+        else if (comando.getParameters().length > 1 && this.buscarJugador(comando.getParameters()[1])) { // Enviar privado
             this.sendPrivate(comando);
         }
 
-        // Si no se encuentra receptor
+            // Si no se encuentra receptor
         else {
             String[] args = new String[] { "RESULT", "Server: Jugador objetivo no encontrado" };
             try {
@@ -371,7 +605,7 @@ public class Server {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
         // Después de procesar el comando, comprobar condición de victoria
         try {
             GameVictoryManager.checkVictory(this);
@@ -379,42 +613,8 @@ public class Server {
         }
 
         // Actualizar stats para todos los jugadores después de cada comando
-        enviarStatsATodos();
+        actualizarDatosParaJugadores();
 
-    }
-
-    /**
-     * Envía estadísticas actualizadas a todos los jugadores conectados.
-     * Cada jugador recibe el ranking, sus stats propias, y las stats de su último
-     * enemigo atacado.
-     */
-    public void enviarStatsATodos() {
-        String ranking = textoMostrarRanking();
-
-        for (ServerThread client : connectedClients) {
-            if (client.name == null) {
-                continue;
-            }
-
-            String ownStats = "";
-            if (this.hashMapEstadisticas.containsKey(client.name)) {
-                ownStats = textoMostrarJugadorPropio(client.name);
-            }
-
-            String enemyStats = "";
-            if (client.ultimoEnemigoAtacado != null &&
-                    !client.ultimoEnemigoAtacado.isEmpty() &&
-                    this.hashMapEstadisticas.containsKey(client.ultimoEnemigoAtacado)) {
-                enemyStats = textoMostrarJugadorEnemigo(client.ultimoEnemigoAtacado);
-            }
-
-            CommandUpdateStats statsCmd = new CommandUpdateStats(ranking, ownStats, enemyStats);
-            try {
-                client.objectSender.writeObject(statsCmd);
-            } catch (IOException ex) {
-                // Ignorar errores de envío
-            }
-        }
     }
 
     public void broadcast(Command comando) {
@@ -454,6 +654,30 @@ public class Server {
                 break;
             }
         }
+    }
+
+    public void enviarResultadoPrivado(ServerThread origin, String mensaje) {
+        if (origin == null || origin.name == null || mensaje == null || mensaje.trim().isEmpty())
+            return;
+        String[] args = new String[] { "RESULT", origin.name, mensaje };
+        try {
+            origin.objectSender.writeObject(CommandFactory.getCommand(args));
+        } catch (IOException ignored) {
+        }
+    }
+
+    private String buscarNombreEnEstadisticas(String candidato) {
+        if (candidato == null)
+            return null;
+        String buscado = candidato.trim();
+        if (buscado.isEmpty())
+            return null;
+        for (String nombre : this.hashMapEstadisticas.keySet()) {
+            if (nombre != null && nombre.equalsIgnoreCase(buscado)) {
+                return nombre;
+            }
+        }
+        return null;
     }
 
     public void sendPrivate(Command comando) {
@@ -525,13 +749,17 @@ public class Server {
         return false;
     }
 
-    /**
-     * Obtiene el ServerThread de un jugador por nombre.
-     * 
-     * @param playerName Nombre del jugador a buscar
-     * @return El ServerThread del jugador, o null si no se encuentra
-     */
-    public ServerThread obtenerJugador(String playerName) {
+    public int contarJugadoresActivos() {
+        int activos = 0;
+        for (ServerThread client : connectedClients) {
+            if (client != null && client.isActive) {
+                activos++;
+            }
+        }
+        return activos;
+    }
+
+    public ServerThread obtenerJugador(String playerName) {  //Obtiene el serverthread asignado al jugador
         if (playerName == null) {
             return null;
         }
@@ -592,5 +820,10 @@ public class Server {
     // Exponer estado de inicio de partida
     public boolean getStart() {
         return start;
+    }
+
+    public void finalizarPartida() {
+        this.start = false;
+        limpiarSolicitudesEmpate();
     }
 }
