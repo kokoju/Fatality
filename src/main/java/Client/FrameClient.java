@@ -60,6 +60,11 @@ public class FrameClient extends javax.swing.JFrame {
         configurarEventListeners();
     }
 
+    /**
+     * Configura los event listeners para botones y labels del formulario.
+     * Se llama desde el constructor para evitar que NetBeans los borre al regenerar
+     * initComponents.
+     */
     private void configurarEventListeners() {
         btnSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +111,8 @@ public class FrameClient extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -115,8 +121,12 @@ public class FrameClient extends javax.swing.JFrame {
         txaRanking = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txaStats = new javax.swing.JTextArea();
-        pnlAttack1 = new javax.swing.JPanel();
-        pnlAttack2 = new javax.swing.JPanel();
+        pnlAtaqueRecibido = new javax.swing.JPanel();
+        InformacionAtaqueRecibido = new javax.swing.JLabel();
+        Agresor = new javax.swing.JLabel();
+        pnlAtaqueEnviado = new javax.swing.JPanel();
+        Atacante = new javax.swing.JLabel();
+        InformacionAtaqueRealizado = new javax.swing.JLabel();
         pnlMenu = new javax.swing.JPanel();
         YOURTEAM = new javax.swing.JLabel();
         Luchador2 = new javax.swing.JLabel();
@@ -168,35 +178,71 @@ public class FrameClient extends javax.swing.JFrame {
         txaStats.setFocusable(false);
         jScrollPane3.setViewportView(txaStats);
 
-        pnlAttack1.setBackground(new java.awt.Color(51, 51, 51));
+        pnlAtaqueRecibido.setBackground(new java.awt.Color(51, 51, 51));
 
-        javax.swing.GroupLayout pnlAttack1Layout = new javax.swing.GroupLayout(pnlAttack1);
-        pnlAttack1.setLayout(pnlAttack1Layout);
-        pnlAttack1Layout.setHorizontalGroup(
-            pnlAttack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
-        );
-        pnlAttack1Layout.setVerticalGroup(
-            pnlAttack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
-        );
+        InformacionAtaqueRecibido.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        InformacionAtaqueRecibido.setText("Último ataque recibido");
 
-        pnlAttack2.setBackground(new java.awt.Color(51, 51, 51));
+        javax.swing.GroupLayout pnlAtaqueRecibidoLayout = new javax.swing.GroupLayout(pnlAtaqueRecibido);
+        pnlAtaqueRecibido.setLayout(pnlAtaqueRecibidoLayout);
+        pnlAtaqueRecibidoLayout.setHorizontalGroup(
+                pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(InformacionAtaqueRecibido)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Agresor, javax.swing.GroupLayout.PREFERRED_SIZE, 156,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap()));
+        pnlAtaqueRecibidoLayout.setVerticalGroup(
+                pnlAtaqueRecibidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(pnlAtaqueRecibidoLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(Agresor, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(pnlAtaqueRecibidoLayout.createSequentialGroup()
+                                                .addComponent(InformacionAtaqueRecibido)
+                                                .addGap(0, 232, Short.MAX_VALUE)))
+                                .addContainerGap()));
 
-        javax.swing.GroupLayout pnlAttack2Layout = new javax.swing.GroupLayout(pnlAttack2);
-        pnlAttack2.setLayout(pnlAttack2Layout);
-        pnlAttack2Layout.setHorizontalGroup(
-            pnlAttack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlAttack2Layout.setVerticalGroup(
-            pnlAttack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
-        );
+        pnlAtaqueEnviado.setBackground(new java.awt.Color(51, 51, 51));
+
+        InformacionAtaqueRealizado.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        InformacionAtaqueRealizado.setText("Último ataque realizado");
+
+        javax.swing.GroupLayout pnlAtaqueEnviadoLayout = new javax.swing.GroupLayout(pnlAtaqueEnviado);
+        pnlAtaqueEnviado.setLayout(pnlAtaqueEnviadoLayout);
+        pnlAtaqueEnviadoLayout.setHorizontalGroup(
+                pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                pnlAtaqueEnviadoLayout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(InformacionAtaqueRealizado)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144,
+                                                Short.MAX_VALUE)
+                                        .addComponent(Atacante, javax.swing.GroupLayout.PREFERRED_SIZE, 156,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addContainerGap()));
+        pnlAtaqueEnviadoLayout.setVerticalGroup(
+                pnlAtaqueEnviadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(pnlAtaqueEnviadoLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(pnlAtaqueEnviadoLayout.createSequentialGroup()
+                                                .addComponent(InformacionAtaqueRealizado)
+                                                .addGap(0, 232, Short.MAX_VALUE))
+                                        .addComponent(Atacante, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()));
 
         pnlMenu.setBackground(new java.awt.Color(51, 51, 51));
 
         YOURTEAM.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        YOURTEAM.setForeground(new java.awt.Color(255, 255, 255));
         YOURTEAM.setText("YOUR TEAM");
 
         Luchador1.setBackground(new java.awt.Color(255, 51, 51));
@@ -250,75 +296,107 @@ public class FrameClient extends javax.swing.JFrame {
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
-            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(YOURTEAM)
-                    .addComponent(nombreLuchador)
-                    .addGroup(pnlMenuLayout.createSequentialGroup()
-                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Luchador1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(arma3)
-                            .addComponent(arma4)
-                            .addComponent(arma2)
-                            .addComponent(arma1)
-                            .addComponent(arma5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(stats1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(pnlMenuLayout.createSequentialGroup()
-                                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(pnlMenuLayout.createSequentialGroup()
-                                        .addComponent(Luchador2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(Luchador3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(Luchador4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(stats2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(stats3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(stats4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(stats5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
-        );
+                pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(YOURTEAM)
+                                        .addComponent(nombreLuchador)
+                                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                                .addGroup(pnlMenuLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(Luchador1, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(arma3)
+                                                        .addComponent(arma4)
+                                                        .addComponent(arma2)
+                                                        .addComponent(arma1)
+                                                        .addComponent(arma5))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(pnlMenuLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(stats1, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                                                .addGroup(pnlMenuLayout.createParallelGroup(
+                                                                        javax.swing.GroupLayout.Alignment.LEADING,
+                                                                        false)
+                                                                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                                                                .addComponent(Luchador2,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        143,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(Luchador3,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        143,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(Luchador4,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        143,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addComponent(stats2,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                        .addComponent(stats3,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                        .addComponent(stats4,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                        .addComponent(stats5,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE))
+                                                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addContainerGap()));
         pnlMenuLayout.setVerticalGroup(
-            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(YOURTEAM)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Luchador4, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-                    .addComponent(Luchador3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Luchador2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Luchador1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlMenuLayout.createSequentialGroup()
-                        .addComponent(nombreLuchador)
-                        .addGap(18, 18, 18)
-                        .addComponent(arma1)
-                        .addGap(18, 18, 18)
-                        .addComponent(arma2)
-                        .addGap(18, 18, 18)
-                        .addComponent(arma3)
-                        .addGap(18, 18, 18)
-                        .addComponent(arma4)
-                        .addGap(18, 18, 18)
-                        .addComponent(arma5))
-                    .addGroup(pnlMenuLayout.createSequentialGroup()
-                        .addComponent(stats1)
-                        .addGap(18, 18, 18)
-                        .addComponent(stats2)
-                        .addGap(18, 18, 18)
-                        .addComponent(stats3)
-                        .addGap(18, 18, 18)
-                        .addComponent(stats4)
-                        .addGap(18, 18, 18)
-                        .addComponent(stats5)))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
+                pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(YOURTEAM)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlMenuLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(Luchador4, javax.swing.GroupLayout.DEFAULT_SIZE, 245,
+                                                Short.MAX_VALUE)
+                                        .addComponent(Luchador3, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Luchador2, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Luchador1, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                                .addComponent(nombreLuchador)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(arma1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(arma2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(arma3)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(arma4)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(arma5))
+                                        .addGroup(pnlMenuLayout.createSequentialGroup()
+                                                .addComponent(stats1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(stats2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(stats3)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(stats4)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(stats5)))
+                                .addContainerGap(14, Short.MAX_VALUE)));
 
         btnSend.setBackground(new java.awt.Color(0, 204, 0));
         btnSend.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
@@ -336,55 +414,95 @@ public class FrameClient extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pnlAttack1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlAttack2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(txfInput))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jScrollPane2,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 200,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jScrollPane1,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 200,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jScrollPane3,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 200,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
+                                                                false)
+                                                        .addComponent(pnlAtaqueRecibido,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(pnlAtaqueEnviado,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(txfInput))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 469,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(pnlAttack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(pnlAttack2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(12, 12, 12))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
-        );
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(7, 7, 7)
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
+                                                .createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(layout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(pnlMenu,
+                                                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
+                                                                .createSequentialGroup()
+                                                                .addComponent(pnlAtaqueRecibido,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(
+                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(pnlAtaqueEnviado,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(12, 12, 12)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17,
+                                        Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(txfInput, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE, 93,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(39, 39, 39)));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -419,6 +537,10 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Agresor;
+    private javax.swing.JLabel Atacante;
+    private javax.swing.JLabel InformacionAtaqueRealizado;
+    private javax.swing.JLabel InformacionAtaqueRecibido;
     private javax.swing.JLabel Luchador1;
     private javax.swing.JLabel Luchador2;
     private javax.swing.JLabel Luchador3;
@@ -435,8 +557,8 @@ public class FrameClient extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel nombreLuchador;
-    private javax.swing.JPanel pnlAttack1;
-    private javax.swing.JPanel pnlAttack2;
+    private javax.swing.JPanel pnlAtaqueEnviado;
+    private javax.swing.JPanel pnlAtaqueRecibido;
     private javax.swing.JPanel pnlMenu;
     private javax.swing.JLabel stats1;
     private javax.swing.JLabel stats2;
@@ -464,11 +586,11 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     public JPanel getPnlAttack1() {
-        return pnlAttack1;
+        return pnlAtaqueRecibido;
     }
 
     public JPanel getPnlAttack2() {
-        return pnlAttack2;
+        return pnlAtaqueEnviado;
     }
 
     public JPanel getPnlMenu() {
@@ -505,6 +627,10 @@ public class FrameClient extends javax.swing.JFrame {
     }
 
     // UI helpers
+    /**
+     * Actualiza el panel de menú cuando se selecciona un luchador.
+     * Muestra el nombre formateado con porcentaje de vida y las armas asignadas.
+     */
     private void alSeleccionarLuchador(int index) {
         if (client == null)
             return;
@@ -529,7 +655,10 @@ public class FrameClient extends javax.swing.JFrame {
             stats5.setText("");
             return;
         }
-        nombreLuchador.setText(p.getNombre());
+        // Formatear nombre sin barras bajas y con mayúsculas, más vida en %
+        String nombreFormateado = formatearNombreLuchador(p.getNombre());
+        int vidaPorcentaje = p.getVida();
+        nombreLuchador.setText(nombreFormateado + " (" + vidaPorcentaje + "%)");
         Arma[] armas = p.getArregloArmas();
         if (armas == null || armas.length == 0) {
             arma1.setText("(sin armas)");
@@ -581,6 +710,9 @@ public class FrameClient extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Convierte un array de daños en una cadena con valores separados por espacios.
+     */
     private String formatearArrayDaño(int[] daños) {
         if (daños == null || daños.length == 0)
             return "";
@@ -594,6 +726,34 @@ public class FrameClient extends javax.swing.JFrame {
         return sb.toString();
     }
 
+    /**
+     * Formatea el nombre de un luchador eliminando guiones bajos y capitalizando
+     * cada palabra.
+     * Ejemplo: "black_manta" -> "Black Manta"
+     */
+    private String formatearNombreLuchador(String nombre) {
+        if (nombre == null || nombre.isEmpty())
+            return "";
+        String[] partes = nombre.split("_");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < partes.length; i++) {
+            if (partes[i].length() > 0) {
+                sb.append(Character.toUpperCase(partes[i].charAt(0)));
+                if (partes[i].length() > 1) {
+                    sb.append(partes[i].substring(1).toLowerCase());
+                }
+            }
+            if (i < partes.length - 1) {
+                sb.append(" ");
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Procesa el comando ingresado por el usuario en el campo de texto.
+     * Valida y ejecuta comandos locales o los envía al servidor según corresponda.
+     */
     private void alEnviarComando() {
         String input = txfInput.getText();
         if (input == null)
@@ -619,6 +779,11 @@ public class FrameClient extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga y escala la imagen de un luchador en el label correspondiente del panel
+     * de menú.
+     * También actualiza el nombre formateado con porcentaje de vida.
+     */
     public void establecerImagenLuchador(String fighterName) {
         if (fighterName == null || fighterName.trim().isEmpty())
             return;
@@ -687,12 +852,102 @@ public class FrameClient extends javax.swing.JFrame {
         java.awt.Image scaled = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
         javax.swing.ImageIcon scaledIcon = new javax.swing.ImageIcon(scaled);
         targetLabel.setIcon(scaledIcon);
-        // también mostrar el nombre
-        nombreLuchador.setText(fighterName);
+        // también mostrar el nombre formateado con vida
+        Peleador p = arr[index];
+        String nombreFormateado = formatearNombreLuchador(fighterName);
+        int vidaPorcentaje = (p != null) ? p.getVida() : 100;
+        nombreLuchador.setText(nombreFormateado + " (" + vidaPorcentaje + "%)");
 
         // Actualizar la vista de armas seleccionando automáticamente este luchador
         if (j != null) {
             alSeleccionarLuchador(index);
         }
+    }
+
+    // Métodos para actualizar paneles de ataque
+    /**
+     * Actualiza el panel de ataque realizado con la imagen del peleador atacante
+     * y el daño total causado.
+     */
+    public void actualizarAtaqueRealizado(String nombrePeleador, int dañoTotal) {
+        // Establecer imagen del peleador atacante
+        javax.swing.ImageIcon icon = cargarImagenPeleador(nombrePeleador);
+        if (icon != null) {
+            int w = Atacante.getWidth();
+            int h = Atacante.getHeight();
+            if (w <= 0)
+                w = Atacante.getPreferredSize().width;
+            if (h <= 0)
+                h = Atacante.getPreferredSize().height;
+            if (w <= 0)
+                w = 100;
+            if (h <= 0)
+                h = 100;
+            java.awt.Image scaled = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
+            Atacante.setIcon(new javax.swing.ImageIcon(scaled));
+        }
+        // Mostrar daño total realizado con nombre formateado
+        String nombreFormateado = formatearNombreLuchador(nombrePeleador);
+        InformacionAtaqueRealizado.setText(nombreFormateado + " - Daño total: " + dañoTotal);
+    }
+
+    /**
+     * Actualiza el panel de ataque recibido con la imagen del agresor
+     * y el daño individual recibido por cada luchador.
+     */
+    public void actualizarAtaqueRecibido(String nombreAgresor, int[] dañosPorLuchador) {
+        // Establecer imagen del agresor
+        javax.swing.ImageIcon icon = cargarImagenPeleador(nombreAgresor);
+        if (icon != null) {
+            int w = Agresor.getWidth();
+            int h = Agresor.getHeight();
+            if (w <= 0)
+                w = Agresor.getPreferredSize().width;
+            if (h <= 0)
+                h = Agresor.getPreferredSize().height;
+            if (w <= 0)
+                w = 100;
+            if (h <= 0)
+                h = 100;
+            java.awt.Image scaled = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
+            Agresor.setIcon(new javax.swing.ImageIcon(scaled));
+        }
+        // Mostrar daño recibido por cada luchador
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        Jugador j = null;
+        if (client != null) {
+            j = client.getJugador();
+        }
+        if (j != null && dañosPorLuchador != null) {
+            Peleador[] peleadores = j.getPeleadores();
+            for (int i = 0; i < dañosPorLuchador.length && i < peleadores.length; i++) {
+                if (peleadores[i] != null) {
+                    String nombreFormateado = formatearNombreLuchador(peleadores[i].getNombre());
+                    sb.append(nombreFormateado).append(": -").append(dañosPorLuchador[i]).append(" HP<br>");
+                }
+            }
+        }
+        sb.append("</html>");
+        InformacionAtaqueRecibido.setText(sb.toString());
+    }
+
+    /**
+     * Carga la imagen de un peleador desde resources (.png o .jpg).
+     * Retorna null si no se encuentra la imagen.
+     */
+    private javax.swing.ImageIcon cargarImagenPeleador(String nombrePeleador) {
+        if (nombrePeleador == null || nombrePeleador.trim().isEmpty())
+            return null;
+        String normalized = nombrePeleador.trim().toLowerCase();
+        java.net.URL url = getClass().getResource("/" + normalized + ".png");
+        if (url != null) {
+            return new javax.swing.ImageIcon(url);
+        }
+        url = getClass().getResource("/" + normalized + ".jpg");
+        if (url != null) {
+            return new javax.swing.ImageIcon(url);
+        }
+        return null;
     }
 }

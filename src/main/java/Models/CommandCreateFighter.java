@@ -64,16 +64,20 @@ public class CommandCreateFighter extends Command {
         // Validar contra la lista oficial de peleadores permitidos
         String[] permitidos = new String[] {
                 "black_manta",
+                "hellboy",
                 "omni_man",
                 "peacemaker",
                 "red_hood",
                 "robocop",
-                "scarecrow"
+                "scarecrow",
+                "scorpion",
+                "spawn",
+                "sub_zero"
         };
         String nombreNormalizado = fighterName.trim().toLowerCase();
         boolean esPermitido = java.util.Arrays.stream(permitidos).anyMatch(p -> p.equals(nombreNormalizado));
         if (!esPermitido) {
-            client.getRefFrame().writeMessage("Nombre inválido. Permitidos: " + String.join(", ", permitidos));
+            client.getRefFrame().writeMessage("Nombre inválido. Permitidos: " + formatearListaPermitidos(permitidos));
             return;
         }
 
@@ -125,6 +129,49 @@ public class CommandCreateFighter extends Command {
                 .collect(Collectors.joining(", "));
     }
 
+    /**
+     * Genera una lista legible de nombres de luchadores permitidos para mostrar al
+     * usuario.
+     */
+    private String formatearListaPermitidos(String[] permitidos) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < permitidos.length; i++) {
+            sb.append(formatearNombreLuchador(permitidos[i]));
+            if (i < permitidos.length - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Formatea el nombre de un luchador eliminando guiones bajos y capitalizando
+     * cada palabra.
+     * Ejemplo: "black_manta" -> "Black Manta"
+     */
+    private String formatearNombreLuchador(String nombre) {
+        if (nombre == null || nombre.isEmpty())
+            return "";
+        String[] partes = nombre.split("_");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < partes.length; i++) {
+            if (partes[i].length() > 0) {
+                sb.append(Character.toUpperCase(partes[i].charAt(0)));
+                if (partes[i].length() > 1) {
+                    sb.append(partes[i].substring(1).toLowerCase());
+                }
+            }
+            if (i < partes.length - 1) {
+                sb.append(" ");
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Asigna 5 armas aleatorias únicas a un peleador desde el pool de armas
+     * disponibles.
+     */
     private void asignarArmasAleatorias(Peleador peleador) {
         List<String> pool = new ArrayList<>(Arrays.asList(ARMAS_DISPONIBLES));
         Collections.shuffle(pool);

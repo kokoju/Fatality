@@ -67,11 +67,12 @@ public class CommandAttack extends Command {
 
         Arma arma = peleador.buscarArmaPorNombre(weaponName);
         if (arma == null) {
-            cliente.getRefFrame().writeMessage("El peleador '" + fighterName + "' no tiene un arma '" + weaponName + "'");
+            cliente.getRefFrame()
+                    .writeMessage("El peleador '" + fighterName + "' no tiene un arma '" + weaponName + "'");
             return;
         }
 
-        if(arma.getFueUsada()){
+        if (arma.getFueUsada()) {
             cliente.getRefFrame().writeMessage("El arma '" + weaponName + "' ya fue usada. Selecciona otra arma.");
             return;
         }
@@ -79,21 +80,32 @@ public class CommandAttack extends Command {
         arma.setFueUsada(true);
 
         String[] newArgs = new String[] {
-            "APPLYATTACK",
-            targetName,   // Jugador objetivo
-            cliente.name, // Nombre del atacante
+                "APPLYATTACK",
+                targetName, // Jugador objetivo
+                cliente.name, // Nombre del atacante
+                fighterName, // Nombre del peleador
+                weaponName // Nombre del arma
         };
         Command applyAttack = new CommandApplyAttack(newArgs);
-        
+
+        // Calcular daño total para mostrar en panel de ataque realizado
+        int dañoTotal = 0;
+        int[] daños = arma.getArregloGolpe();
+        if (daños != null) {
+            for (int d : daños) {
+                dañoTotal += d;
+            }
+        }
+
         try {
             cliente.objectSender.writeObject(applyAttack);
             cliente.getRefFrame().writeMessage("Ataque enviado a '" + targetName + "' usando '" + weaponName + "'");
+            // Actualizar panel de ataque realizado
+            cliente.getRefFrame().actualizarAtaqueRealizado(fighterName, dañoTotal);
         } catch (IOException ex) {
             Logger.getLogger(CommandAttack.class.getName()).log(Level.SEVERE, null, ex);
             cliente.getRefFrame().writeMessage("No se pudo enviar el ataque: " + ex.getMessage());
         }
     }
-
-
 
 }
