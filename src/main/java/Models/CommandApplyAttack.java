@@ -18,33 +18,20 @@ public class CommandApplyAttack extends Command {
 
     private static final int MIN_SUCCESS_DAMAGE = 60;
 
-    private String attackerFighterName;
-    private String attackerName;
-    private String weaponName;
-    private int[] weaponDamages;
+    private final String attackerFighterName;
+    private final String attackerName;
+    private final String weaponName;
+    private final String targetName;
+    private final int[] weaponDamages;
 
     public CommandApplyAttack(String[] args) {
         super(CommandType.APPLYATTACK, args); // 0 -> APPLYATTACK , 1 -> targetName
-        if (args.length > 2) {
-            this.attackerName = args[2];
-        } else {
-            this.attackerName = "";
-        }
+        this.targetName = args.length > 1 ? args[1] : "";
+        this.attackerName = args.length > 2 ? args[2] : "";
+        this.attackerFighterName = args.length > 3 ? args[3] : "";
+        this.weaponName = args.length > 4 ? args[4] : "";
 
-        if (args.length > 3) {
-            this.attackerFighterName = args[3];
-        } else {
-            this.attackerFighterName = "";
-        }
-
-        if (args.length > 4) {
-            this.weaponName = args[4];
-        } else {
-            this.weaponName = "";
-        }
-
-        // Parsear los daños del arma (formato: "d0,d1,d2,...")
-        if (args.length > 5 && args[5] != null && !args[5].isEmpty()) {
+        if (args.length > 5 && args[5] != null && !args[5].trim().isEmpty()) {
             String[] partes = args[5].split(",");
             this.weaponDamages = new int[partes.length];
             for (int i = 0; i < partes.length; i++) {
@@ -58,7 +45,7 @@ public class CommandApplyAttack extends Command {
             this.weaponDamages = new int[0];
         }
 
-        this.consumesTurn = false; // No consume turno, es parte del flujo del ataque
+        this.consumesTurn = true;
         this.ownCommand = false;
         this.setIsBroadcast(false);
     }
@@ -70,13 +57,22 @@ public class CommandApplyAttack extends Command {
 
     @Override
     public void processInClient(Client clienteAtacado) {
-        Jugador jugador = clienteAtacado.getJugador();
-        Peleador[] peleadores = jugador.getPeleadores();
 
+        if (clienteAtacado == null)
+            return;
+        Jugador jugador = clienteAtacado.getJugador();
+        if (jugador == null)
+            return;
+
+        Peleador[] peleadores = jugador.getPeleadores();
+        if (peleadores == null)
+            return;
+
+        int[] dañosPorLuchador = new int[peleadores.length];
         int succesfullattacks = 0;
         int failedattacks = 0;
         int totalAttacks = 0;
-        int[] dañosPorLuchador = new int[peleadores.length];
+        int dañoTotal = 0;
 
         for (int i = 0; i < peleadores.length; i++) {
             Peleador objetivo = peleadores[i];
@@ -85,7 +81,6 @@ public class CommandApplyAttack extends Command {
                 continue;
             }
 
-            // Calcular daño basado en el tipo del peleador objetivo
             int dano = calcularDañoContraPeleador(objetivo);
             dañosPorLuchador[i] = dano;
             totalAttacks++;
@@ -93,25 +88,19 @@ public class CommandApplyAttack extends Command {
             if (dano >= MIN_SUCCESS_DAMAGE) {
                 objetivo.recibirGolpe(dano);
                 succesfullattacks++;
+                dañoTotal += dano;
             } else {
                 failedattacks++;
             }
         }
 
-        // Calcular daño total
-        int dañoTotal = 0;
-        for (int d : dañosPorLuchador) {
-            if (d >= MIN_SUCCESS_DAMAGE) {
-                dañoTotal += d;
-            }
+        if (clienteAtacado.getRefFrame() != null) {
+            clienteAtacado.getRefFrame().actualizarAtaqueRecibido(
+                    attackerName,
+                    attackerFighterName,
+                    weaponName,
+                    dañosPorLuchador);
         }
-
-        // Actualizar panel de ataque recibido con info completa
-        clienteAtacado.getRefFrame().actualizarAtaqueRecibido(
-                attackerName,
-                attackerFighterName,
-                weaponName,
-                dañosPorLuchador);
 
         enviarResumen(clienteAtacado, dañoTotal, totalAttacks, succesfullattacks, failedattacks);
 
@@ -148,10 +137,6 @@ public class CommandApplyAttack extends Command {
         }
     }
 
-    /**
-     * Calcula el daño que el arma causa a un peleador según su tipo.
-     * Usa el ordinal del Tipo para indexar el arregloGolpe del arma.
-     */
     private int calcularDañoContraPeleador(Peleador objetivo) {
         if (objetivo == null || weaponDamages == null || weaponDamages.length == 0)
             return 0;
@@ -171,17 +156,13 @@ public class CommandApplyAttack extends Command {
         if (attackerName == null || attackerName.trim().isEmpty())
             return;
 
-        // Obtener el nombre del jugador atacado
-        String targetName = "";
-        if (clienteAtacado.name != null) {
-            targetName = clienteAtacado.name;
-        }
+        String target = clienteAtacado.name != null ? clienteAtacado.name : targetName;
 
         CommandUpdateSummary summary = new CommandUpdateSummary(
                 attackerName,
                 attackerFighterName,
                 weaponName,
-                targetName,
+                target,
                 dañoTotal,
                 totalAttacks,
                 successfulAttacks,
@@ -194,5 +175,5 @@ public class CommandApplyAttack extends Command {
                 frame.writeMessage("No se pudo enviar el resumen del ataque: " + ex.getMessage());
         }
     }
-
+    
 }

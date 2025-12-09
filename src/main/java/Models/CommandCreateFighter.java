@@ -4,28 +4,17 @@
  */
 package Models;
 
-import Client.Arma;
 import Client.Client;
 import Client.Jugador;
-import Peleador.Peleador;
 import Peleador.Tipo;
 import Server.ServerThread;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Handles CreateFighter <Nombre> <Tipo> requests.
+ * author sando
  */
 public class CommandCreateFighter extends Command {
-
-    private static final String[] ARMAS_DISPONIBLES = {
-            "Espada", "Arco", "Hacha", "Lanza", "Martillo",
-            "Daga", "Escudo", "Ballesta", "Katana", "Maza",
-            "Florete", "Guadaña", "Tridente", "Shuriken", "Nunchaku"
-    };
 
     public CommandCreateFighter(String[] args) {
         super(CommandType.CREATEFIGHTER, args);
@@ -107,12 +96,6 @@ public class CommandCreateFighter extends Command {
             return;
         }
 
-        // Asignar 5 armas aleatorias al peleador recién creado
-        Peleador peleador = jugador.buscarPeleadorPorNombre(fighterName);
-        if (peleador != null) {
-            asignarArmasAleatorias(peleador);
-        }
-
         // Actualizar imagen en el pnlMenu del FrameClient
         try {
             client.getRefFrame().establecerImagenLuchador(fighterName);
@@ -120,7 +103,8 @@ public class CommandCreateFighter extends Command {
             client.getRefFrame().writeMessage("No se pudo cargar la imagen para '" + fighterName + "'");
         }
 
-        client.getRefFrame().writeMessage("Peleador '" + fighterName + "' creado como " + tipo.toString());
+        client.getRefFrame().writeMessage("Peleador '" + fighterName + "' creado como " + tipo.toString()
+            + ". Recuerda usar AssignWeapon para equiparlo.");
     }
 
     private String availableTypes() {
@@ -168,21 +152,4 @@ public class CommandCreateFighter extends Command {
         return sb.toString();
     }
 
-    /**
-     * Asigna 5 armas aleatorias únicas a un peleador desde el pool de armas
-     * disponibles.
-     */
-    private void asignarArmasAleatorias(Peleador peleador) {
-        List<String> pool = new ArrayList<>(Arrays.asList(ARMAS_DISPONIBLES));
-        Collections.shuffle(pool);
-        int asignadas = 0;
-        for (String nombreArma : pool) {
-            if (asignadas >= 5)
-                break;
-            Arma arma = new Arma(nombreArma);
-            if (peleador.asignarArma(arma)) {
-                asignadas++;
-            }
-        }
-    }
 }
