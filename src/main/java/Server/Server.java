@@ -123,7 +123,7 @@ public class Server {
         // Aquí, estamos creando una lista que almacena <Map.Entry<String, Stats>>, reagrupando entonces todo el contenido del HashMap
         
         entryList.sort((entry1, entry2) ->  // Ordenamos por WINS de forma ascendente
-            Integer.compare(entry2.getValue().getWins(), entry1.getValue().getWins()));  // Esta línea indica al sort como ordenar, en función de una regla de comparación
+            Integer.compare(entry2.getValue().getHashMapStats().get("WINS"), entry1.getValue().getHashMapStats().get("WINS")));  // Esta línea indica al sort como ordenar, en función de una regla de comparación
         // Debe retornar lo siguiente, al ejecutar una comparación del estilo (a,b) -> a - b:
         // - NEGATIVO si a debe ir ANTES que b (si a = 5 y b = 10, 5 - 10 = -5, entonces a va antes de b)
         // - CERO si son iguales en términos de orden (si a = 5 y b = 5, 5 - 5 = 0, entonces el orden entre a y b da igual)
@@ -170,6 +170,39 @@ public class Server {
         System.out.println(k + ": " + v.toString())
     );
 }
+    
+    public String textoMostrarRanking() {
+        StringBuilder texto = new StringBuilder();
+        texto.append("RANKING: \n");
+        ArrayList<String> nombres = new ArrayList<String>(this.hashMapEstadisticas.keySet());   
+        for (int i = 0; i < this.hashMapEstadisticas.size(); i++) {
+            texto.append((i + 1) + ". " + this.hashMapEstadisticas.get(nombres.get(i)) + "\n");
+        }
+        return texto.toString();
+    }
+    
+    public String textoMostrarJugadorPropio(String nombreJugador) {
+        StringBuilder texto = new StringBuilder();
+        texto.append("MI ESTADO: \n");
+        Stats estadisticas = this.hashMapEstadisticas.get(nombreJugador);
+        // Para cada elemento del HashMap (tanto llave como valor), se hace una secuencia para añadirlo al texto
+        estadisticas.getHashMapStats().forEach((k, v) -> {texto.append(k + ": " + v + "\n");});
+                
+        return texto.toString();
+    }
+    
+    public String textoMostrarJugadorEnemigo(String nombreJugador) {
+        StringBuilder texto = new StringBuilder();
+        texto.append("ESTADO DE ")
+             .append(nombreJugador)
+             .append(": \n");
+        Stats estadisticas = this.hashMapEstadisticas.get(nombreJugador);
+        // Para cada elemento del HashMap (tanto llave como valor), se hace una secuencia para añadirlo al texto
+        estadisticas.getHashMapStats().forEach((k, v) -> {texto.append(k + ": " + v + "\n");});
+        
+        return texto.toString();
+    }
+            
     
     public void crearNuevoJugador(String nombreJugador) {  // Si entra un jugador que no forma parte de los rankings, se añade
         this.hashMapEstadisticas.put(nombreJugador, new Stats());

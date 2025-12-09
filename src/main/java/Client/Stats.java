@@ -4,84 +4,59 @@
  */
 package Client;
 
+import java.util.LinkedHashMap;
+
 /**
  *
  * @author kokoju
  */
 public class Stats {
     // Atributos
-    int wins;
-    int losses;
-    int attacks;
-    int sucess;
-    int failed;
-    int giveup;
+    LinkedHashMap<String, Integer> hashMapStats;
     
     // Constructores
     public Stats() {  // Constructor que establece todo en 0s
-        this.wins = 0;
-        this.losses = 0;
-        this.attacks = 0;
-        this.sucess = 0;
-        this.failed = 0;
-        this.giveup = 0;
+        this.hashMapStats = new LinkedHashMap<>();
+        this.hashMapStats.put("WINS", 0);
+        this.hashMapStats.put("LOSSES", 0);
+        this.hashMapStats.put("ATTACKS", 0);
+        this.hashMapStats.put("SUCCESS", 0);
+        this.hashMapStats.put("FAILED", 0);
+        this.hashMapStats.put("GIVEUP", 0);
     }
     
     public Stats(int wins, int losses, int attacks, int sucess, int failed, int giveup) {
-        this.wins = wins;
-        this.losses = losses;
-        this.attacks = attacks;
-        this.sucess = sucess;
-        this.failed = failed;
-        this.giveup = giveup;
+        this.hashMapStats = new LinkedHashMap<>();
+        this.hashMapStats.put("WINS", wins);
+        this.hashMapStats.put("LOSSES", losses);
+        this.hashMapStats.put("ATTACKS", attacks);
+        this.hashMapStats.put("SUCCESS", sucess);
+        this.hashMapStats.put("FAILED", failed);
+        this.hashMapStats.put("GIVEUP", giveup);
     }
     
-    
     // Métodos
-    public void incrementarStat(String statIncrementada) {
+    public void incrementarStat(String statIncrementada) {  // Incrementa en 1 una estadística
         statIncrementada = statIncrementada.toUpperCase();
-        switch(statIncrementada) {
-            case "WINS" -> ++wins;
-            case "LOSSES" -> ++losses;
-            case "ATTACKS" -> ++attacks;
-            case "SUCESS" -> ++sucess;
-            case "FAILED" -> ++failed;
-            case "GIVEUP" -> ++giveup;
-        }
+        int val = this.hashMapStats.get(statIncrementada);
+        this.hashMapStats.put(statIncrementada, ++val);
     }
 
     public void addAttackSummary(int totalAttacks, int successfulAttacks, int failedAttacks) {
+        int val = 0;  // Se crea una variable para almacenar enteros
         if (totalAttacks > 0)
-            this.attacks += totalAttacks;
+            val = this.hashMapStats.get("ATTACKS");
+            this.hashMapStats.put("ATTACKS", (val + totalAttacks));
         if (successfulAttacks > 0)
-            this.sucess += successfulAttacks;
+            val = this.hashMapStats.get("SUCCESS");
+            this.hashMapStats.put("SUCCESS", (val + successfulAttacks));
         if (failedAttacks > 0)
-            this.failed += failedAttacks;
+            val = this.hashMapStats.get("FAILED");
+            this.hashMapStats.put("FAILED", (val + failedAttacks));
     }
     
     // Getters
-    public int getWins() {
-        return wins;
+    public LinkedHashMap<String, Integer> getHashMapStats() {
+        return hashMapStats;
     }
-
-    public int getLosses() {
-        return losses;
-    }
-
-    public int getAttacks() {
-        return attacks;
-    }
-
-    public int getSucess() {
-        return sucess;
-    }
-
-    public int getFailed() {
-        return failed;
-    }
-
-    public int getGiveup() {
-        return giveup;
-    }
-    
 }
