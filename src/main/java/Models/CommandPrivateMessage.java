@@ -23,6 +23,7 @@ public class CommandPrivateMessage extends Command{
     @Override
     public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(false);
+        serverThread.getServer().sendPrivate(this);
     }
     
     @Override

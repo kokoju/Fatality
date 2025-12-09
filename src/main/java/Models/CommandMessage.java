@@ -23,6 +23,7 @@ public class CommandMessage extends Command{
     @Override
     public void processForServer(ServerThread serverThread) {
         this.setIsBroadcast(true);
+        serverThread.getServer().broadcast(this);
         
     }
     
